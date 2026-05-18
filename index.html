@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAP CPG Sales Portal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>SAP CPG Sales Portal</h1>
+    <input type="text" id="search" placeholder="Search companies..." />
+  </header>
+  <main>
+    <div class="cta-bar">
+      <button id="btn-request" class="btn-primary">+ Request Update</button>
+      <button id="btn-respond" class="btn-secondary">✓ Submit Response</button>
+    </div>
+    <table id="company-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Company</th>
+          <th>Category</th>
+          <th>Region</th>
+          <th>AE</th>
+          <th>Landscape</th>
+          <th>Project Status</th>
+          <th>Requests</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </main>
+
+  <!-- Request Update Modal -->
+  <div id="modal-request" class="modal hidden">
+    <div class="modal-content">
+      <h2>Request Update</h2>
+      <label>Company
+        <select id="req-company"></select>
+      </label>
+      <label>Question
+        <textarea id="req-question" rows="4" placeholder="What do you want to know?"></textarea>
+      </label>
+      <label>Your Name
+        <input type="text" id="req-name" placeholder="e.g. Shady" />
+      </label>
+      <div class="modal-actions">
+        <button id="req-cancel" class="btn-ghost">Cancel</button>
+        <button id="req-submit" class="btn-primary">Send + Email →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit Response Modal -->
+  <div id="modal-response" class="modal hidden">
+    <div class="modal-content">
+      <h2>Submit Response</h2>
+      <label>Company
+        <select id="res-company"></select>
+      </label>
+      <label>Response
+        <textarea id="res-response" rows="4" placeholder="Your answer..."></textarea>
+      </label>
+      <label>Your Name
+        <input type="text" id="res-name" placeholder="e.g. John (AE)" />
+      </label>
+      <div class="modal-actions">
+        <button id="res-cancel" class="btn-ghost">Cancel</button>
+        <button id="res-submit" class="btn-secondary">Submit ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Company Detail Modal -->
+  <div id="modal-detail" class="modal hidden">
+    <div class="modal-content modal-wide">
+      <h2 id="detail-name"></h2>
+      <div id="detail-body"></div>
+      <div class="modal-actions">
+        <button id="detail-close" class="btn-ghost">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
