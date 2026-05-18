@@ -1,8 +1,17 @@
 // ── CONFIG ──────────────────────────────────────────────────────────────
 const GITHUB_OWNER = 'zarwalikhatri677-dotcom';
 const GITHUB_REPO  = 'cpg-sales-portal-';
-const GITHUB_TOKEN = window.GITHUB_TOKEN;
 const DASHBOARD_URL = 'https://zarwalikhatri677-dotcom.github.io/cpg-sales-portal-';
+
+function getToken() {
+  let t = localStorage.getItem('gh_token');
+  if (!t) {
+    t = prompt('Enter your GitHub token to access the portal:');
+    if (t) localStorage.setItem('gh_token', t);
+  }
+  return t;
+}
+const GITHUB_TOKEN = getToken();
 
 // ── STATE ────────────────────────────────────────────────────────────────
 let companies = [];
