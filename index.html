@@ -1,90 +1,1441 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SAP CPG Sales Portal</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SAP CPG Sales Portal</title>
+<style>
+  :root {
+    --sap-blue: #0a2f6b;
+    --sap-blue-mid: #1a4faa;
+    --sap-blue-light: #2878c8;
+    --sap-gold: #f0ab00;
+    --sap-green: #107e3e;
+    --sap-green-light: #1aab58;
+    --sap-orange: #e86c00;
+    --sap-red: #bb0000;
+    --bg: #f4f6fb;
+    --surface: #ffffff;
+    --surface2: #f0f4fb;
+    --border: #d9e1ed;
+    --text: #1a2333;
+    --text-muted: #5a6880;
+    --shadow: 0 2px 12px rgba(10,47,107,0.10);
+    --shadow-lg: 0 8px 32px rgba(10,47,107,0.18);
+    --radius: 8px;
+    --radius-lg: 14px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: '72', 'SAP 72', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background: var(--sap-blue);
+    color: #fff;
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    height: 62px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.22);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .sap-badge {
+    background: var(--sap-gold);
+    color: var(--sap-blue);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+
+  .header-title {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+
+  .header-divider {
+    width: 1px;
+    height: 28px;
+    background: rgba(255,255,255,0.22);
+    flex-shrink: 0;
+  }
+
+  .header-subtitle {
+    font-size: 12px;
+    color: rgba(255,255,255,0.62);
+    white-space: nowrap;
+  }
+
+  .header-spacer { flex: 1; }
+
+  .search-wrap {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255,255,255,0.55);
+    font-size: 14px;
+    pointer-events: none;
+  }
+
+  #searchInput {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 22px;
+    color: #fff;
+    padding: 7px 14px 7px 32px;
+    font-size: 13.5px;
+    width: 230px;
+    outline: none;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  #searchInput::placeholder { color: rgba(255,255,255,0.48); }
+  #searchInput:focus {
+    background: rgba(255,255,255,0.18);
+    border-color: rgba(255,255,255,0.5);
+  }
+
+  .header-btns {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 22px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.15s, transform 0.1s, box-shadow 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); opacity: 1; }
+
+  .btn-blue {
+    background: var(--sap-blue-light);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(40,120,200,0.35);
+  }
+
+  .btn-green {
+    background: var(--sap-green-light);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(26,171,88,0.35);
+  }
+
+  /* ─── MAIN ─── */
+  main {
+    max-width: 1340px;
+    margin: 0 auto;
+    padding: 28px 20px 60px;
+  }
+
+  /* ─── STATS STRIP ─── */
+  .stats-strip {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    flex: 1;
+    min-width: 130px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    font-weight: 600;
+  }
+
+  .stat-value {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--sap-blue);
+    line-height: 1;
+  }
+
+  .stat-value.orange { color: var(--sap-orange); }
+  .stat-value.green  { color: var(--sap-green); }
+  .stat-value.gold   { color: var(--sap-gold); }
+
+  /* ─── FILTER BAR ─── */
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .filter-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .filter-chip {
+    padding: 5px 14px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-weight: 500;
+  }
+
+  .filter-chip:hover { border-color: var(--sap-blue-light); color: var(--sap-blue-light); }
+  .filter-chip.active {
+    background: var(--sap-blue);
+    border-color: var(--sap-blue);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* ─── TABLE ─── */
+  .table-wrap {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .table-head-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+
+  .table-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--sap-blue);
+    letter-spacing: 0.2px;
+  }
+
+  .row-count {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  thead th {
+    padding: 11px 14px;
+    text-align: left;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    background: var(--surface2);
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  thead th:hover { color: var(--sap-blue); }
+  thead th.sorted { color: var(--sap-blue); }
+  thead th.sorted::after { content: ' ↓'; }
+  thead th.sorted.asc::after { content: ' ↑'; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #eef3fc; }
+  tbody tr.highlighted { background: #fff8e6; }
+
+  td {
+    padding: 11px 14px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  .td-rank {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+    width: 36px;
+  }
+
+  .td-company {
+    font-weight: 600;
+    color: var(--sap-blue);
+    max-width: 200px;
+    white-space: normal;
+  }
+
+  .td-category {
+    max-width: 160px;
+  }
+
+  .cat-badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-size: 11.5px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .region-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    background: var(--surface2);
+    color: var(--sap-blue);
+    border: 1px solid var(--border);
+  }
+
+  .landscape-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 9px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+  }
+
+  .status-dot {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .req-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .req-none   { color: var(--text-muted); opacity: 0.4; font-size: 16px; }
+  .req-open   { background: #fff3e0; color: var(--sap-orange); border: 1.5px solid var(--sap-orange); }
+  .req-answered { background: #e8f5e9; color: var(--sap-green); border: 1.5px solid var(--sap-green); }
+
+  .no-results {
+    text-align: center;
+    padding: 52px 20px;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  /* ─── MODALS ─── */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,47,107,0.38);
+    backdrop-filter: blur(3px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 620px;
+    max-height: 88vh;
+    overflow-y: auto;
+    transform: translateY(18px) scale(0.98);
+    transition: transform 0.22s cubic-bezier(.22,.68,0,1.2);
+  }
+
+  .overlay.open .modal {
+    transform: translateY(0) scale(1);
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--sap-blue);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    color: #fff;
+  }
+
+  .modal-title {
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .modal-close {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+  }
+  .modal-close:hover { background: rgba(255,255,255,0.28); }
+
+  .modal-body { padding: 22px 24px; }
+
+  .field-group { margin-bottom: 18px; }
+
+  .field-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 6px;
+  }
+
+  .field-input,
+  .field-select,
+  .field-textarea {
+    width: 100%;
+    padding: 9px 13px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 14px;
+    color: var(--text);
+    background: var(--surface);
+    outline: none;
+    transition: border-color 0.15s;
+    font-family: inherit;
+  }
+
+  .field-input:focus,
+  .field-select:focus,
+  .field-textarea:focus {
+    border-color: var(--sap-blue-light);
+    box-shadow: 0 0 0 3px rgba(40,120,200,0.13);
+  }
+
+  .field-textarea { resize: vertical; min-height: 100px; }
+
+  .modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 24px 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .btn-cancel {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--text-muted);
+    padding: 8px 18px;
+    border-radius: 22px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-cancel:hover { border-color: var(--sap-blue); color: var(--sap-blue); }
+
+  /* ─── DETAIL MODAL ─── */
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .detail-cell {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+  }
+
+  .detail-cell-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 4px;
+  }
+
+  .detail-cell-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    word-break: break-word;
+  }
+
+  .detail-cell-value.muted { color: var(--text-muted); font-weight: 400; font-style: italic; }
+
+  .section-heading {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--sap-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .request-thread {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .request-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    border-left: 3px solid var(--sap-blue-light);
+  }
+
+  .request-item.answered {
+    border-left-color: var(--sap-green);
+  }
+
+  .req-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .req-badge {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 8px;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .req-badge.open { background: #fff3e0; color: var(--sap-orange); }
+  .req-badge.answered { background: #e8f5e9; color: var(--sap-green); }
+
+  .req-text { font-size: 13.5px; color: var(--text); line-height: 1.5; }
+  .req-response {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border);
+    font-size: 13px;
+    color: var(--sap-green);
+    font-style: italic;
+    line-height: 1.5;
+  }
+  .req-response::before { content: '↩ '; font-style: normal; }
+
+  .empty-requests {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-style: italic;
+    background: var(--surface2);
+    border-radius: var(--radius);
+    border: 1px dashed var(--border);
+  }
+
+  /* ─── CATEGORY COLORS ─── */
+  .cat-fb    { background: #e3f0ff; color: #1a5faa; }
+  .cat-food  { background: #fff3cd; color: #8a5500; }
+  .cat-hpc   { background: #fce4ec; color: #b71c6a; }
+  .cat-bev   { background: #e8f5e9; color: #1b7a40; }
+  .cat-alc   { background: #ede7f6; color: #512da8; }
+  .cat-prot  { background: #fbe9e7; color: #bf360c; }
+  .cat-beauty { background: #fdf6b2; color: #7d5c00; }
+  .cat-dairy { background: #e0f7fa; color: #00607a; }
+  .cat-tob   { background: #efebe9; color: #4e342e; }
+  .cat-dur   { background: #f3e5f5; color: #6a1b9a; }
+  .cat-ch    { background: #e8eaf6; color: #283593; }
+
+  /* ─── PROJECT STATUS ─── */
+  .ps-star   { color: #f5a623; }
+  .ps-clock  { color: var(--sap-orange); }
+  .ps-live   { color: var(--sap-green); font-size: 11px; font-weight: 700; background: #e8f5e9; padding: 2px 6px; border-radius: 8px; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .detail-grid { grid-template-columns: 1fr; }
+    header { gap: 10px; padding: 0 14px; }
+    .header-subtitle { display: none; }
+    #searchInput { width: 160px; }
+    .header-title { font-size: 14px; }
+    .btn { padding: 7px 12px; font-size: 12px; }
+    main { padding: 16px 10px 40px; }
+  }
+
+  @media (max-width: 600px) {
+    .stats-strip { gap: 8px; }
+    .stat-card { min-width: 100px; padding: 10px 14px; }
+    .filter-bar { gap: 6px; }
+    #searchInput { width: 130px; }
+  }
+
+  /* ─── CONVERSATION COLUMN ─── */
+  .conv-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-width: 220px;
+  }
+  .conv-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .conv-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: 10px;
+    font-size: 10.5px;
+    font-weight: 700;
+    background: var(--surface2);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+  .conv-count.has-msgs {
+    background: #e3f0ff;
+    color: var(--sap-blue-mid);
+    border-color: #b3d0f5;
+  }
+  .conv-date {
+    font-size: 10.5px;
+    color: var(--text-muted);
+  }
+  .conv-snippet {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 210px;
+  }
+  .conv-snippet.from-ae { color: var(--sap-green); }
+  .conv-snippet.from-hq { color: var(--sap-blue-mid); }
+  .conv-none { color: var(--border); font-size: 15px; }
+
+  /* ─── CONVERSATION THREAD IN DETAIL MODAL ─── */
+  .conv-thread {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .conv-msg {
+    border-radius: var(--radius);
+    padding: 11px 14px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    max-width: 92%;
+  }
+  .conv-msg.hq {
+    background: #e8f0fe;
+    border: 1px solid #c5d8f8;
+    align-self: flex-start;
+    border-left: 3px solid var(--sap-blue-light);
+  }
+  .conv-msg.ae {
+    background: #e8f5e9;
+    border: 1px solid #b2dfcc;
+    align-self: flex-end;
+    border-right: 3px solid var(--sap-green);
+    text-align: left;
+  }
+  .conv-msg-meta {
+    font-size: 10.5px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .conv-msg.ae .conv-msg-meta { color: var(--sap-green); }
+  .conv-msg.hq .conv-msg-meta { color: var(--sap-blue-mid); }
+  .conv-empty {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-style: italic;
+    background: var(--surface2);
+    border-radius: var(--radius);
+    border: 1px dashed var(--border);
+  }
+
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #b0bcd4; }
+
+  /* ─── TOAST ─── */
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: var(--sap-blue);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: var(--radius);
+    font-size: 13.5px;
+    font-weight: 600;
+    box-shadow: var(--shadow-lg);
+    z-index: 999;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .toast.success { background: var(--sap-green); }
+  .toast.warning { background: var(--sap-orange); }
+</style>
 </head>
 <body>
-  <header>
-    <h1>SAP CPG Sales Portal</h1>
-    <input type="text" id="search" placeholder="Search companies..." />
-  </header>
-  <main>
-    <div class="cta-bar">
-      <button id="btn-request" class="btn-primary">+ Request Update</button>
-      <button id="btn-respond" class="btn-secondary">✓ Submit Response</button>
+
+<!-- ─── HEADER ─── -->
+<header>
+  <div class="header-logo">
+    <span class="sap-badge">SAP</span>
+    <span class="header-title">CPG Sales Portal</span>
+  </div>
+  <div class="header-divider"></div>
+  <span class="header-subtitle">Consumer Products Group · Account Intelligence</span>
+  <div class="header-spacer"></div>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input id="searchInput" type="text" placeholder="Search companies…" autocomplete="off" />
+  </div>
+  <div class="header-btns">
+    <button class="btn btn-blue" onclick="openRequestModal()">➕ Request Update</button>
+    <button class="btn btn-green" onclick="openResponseModal()">✅ Submit Response</button>
+  </div>
+</header>
+
+<!-- ─── MAIN ─── -->
+<main>
+
+  <!-- Stats -->
+  <div class="stats-strip" id="statsStrip"></div>
+
+  <!-- Filter bar -->
+  <div class="filter-bar" id="filterBar">
+    <span class="filter-label">Filter:</span>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <div class="table-head-bar">
+      <span class="table-title">Account Coverage</span>
+      <span class="row-count" id="rowCount"></span>
     </div>
-    <table id="company-table">
+    <table id="mainTable">
       <thead>
         <tr>
-          <th>#</th>
-          <th>Company</th>
-          <th>Category</th>
-          <th>Region</th>
+          <th onclick="sortBy('rank')">#</th>
+          <th onclick="sortBy('name')">Company</th>
+          <th onclick="sortBy('category')">Category</th>
+          <th onclick="sortBy('region')">Region</th>
           <th>AE</th>
-          <th>Landscape</th>
-          <th>Project Status</th>
-          <th>Requests</th>
+          <th onclick="sortBy('landscape')">Landscape</th>
+          <th onclick="sortBy('projectStatus')">Status</th>
+          <th>Conversation</th>
         </tr>
       </thead>
-      <tbody id="table-body"></tbody>
+      <tbody id="tableBody"></tbody>
     </table>
-  </main>
-
-  <!-- Request Update Modal -->
-  <div id="modal-request" class="modal hidden">
-    <div class="modal-content">
-      <h2>Request Update</h2>
-      <label>Company
-        <select id="req-company"></select>
-      </label>
-      <label>Question
-        <textarea id="req-question" rows="4" placeholder="What do you want to know?"></textarea>
-      </label>
-      <label>Your Name
-        <input type="text" id="req-name" placeholder="e.g. Shady" />
-      </label>
-      <div class="modal-actions">
-        <button id="req-cancel" class="btn-ghost">Cancel</button>
-        <button id="req-submit" class="btn-primary">Send + Email →</button>
-      </div>
+    <div id="noResults" class="no-results" style="display:none;">
+      No companies match your search.
     </div>
   </div>
+</main>
 
-  <!-- Submit Response Modal -->
-  <div id="modal-response" class="modal hidden">
-    <div class="modal-content">
-      <h2>Submit Response</h2>
-      <label>Company
-        <select id="res-company"></select>
-      </label>
-      <label>Response
-        <textarea id="res-response" rows="4" placeholder="Your answer..."></textarea>
-      </label>
-      <label>Your Name
-        <input type="text" id="res-name" placeholder="e.g. John (AE)" />
-      </label>
-      <div class="modal-actions">
-        <button id="res-cancel" class="btn-ghost">Cancel</button>
-        <button id="res-submit" class="btn-secondary">Submit ✓</button>
+<!-- ─── DETAIL MODAL ─── -->
+<div class="overlay" id="detailOverlay" onclick="closeOnOverlay(event,'detailOverlay')">
+  <div class="modal" id="detailModal">
+    <div class="modal-header">
+      <span class="modal-title" id="detailTitle">Company Details</span>
+      <button class="modal-close" onclick="closeModal('detailOverlay')">✕</button>
+    </div>
+    <div class="modal-body" id="detailBody"></div>
+  </div>
+</div>
+
+<!-- ─── REQUEST MODAL ─── -->
+<div class="overlay" id="requestOverlay" onclick="closeOnOverlay(event,'requestOverlay')">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">➕ Request Account Update</span>
+      <button class="modal-close" onclick="closeModal('requestOverlay')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <label class="field-label" for="reqCompany">Company</label>
+        <select class="field-select" id="reqCompany"></select>
       </div>
+      <div class="field-group">
+        <label class="field-label" for="reqQuestion">Your Question / Request</label>
+        <textarea class="field-textarea" id="reqQuestion" placeholder="e.g. What is the current deployment status of the RISE rollout?"></textarea>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="reqName">Your Name</label>
+        <input class="field-input" type="text" id="reqName" placeholder="e.g. Zarwali" />
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">
+        Clicking "Send + Email →" will open Outlook with a pre-filled message to the Account Executive. You and the Industry Advisor will be CC'd automatically.
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('requestOverlay')">Cancel</button>
+      <button class="btn btn-blue" onclick="submitRequest()">Send + Email →</button>
     </div>
   </div>
+</div>
 
-  <!-- Company Detail Modal -->
-  <div id="modal-detail" class="modal hidden">
-    <div class="modal-content modal-wide">
-      <h2 id="detail-name"></h2>
-      <div id="detail-body"></div>
-      <div class="modal-actions">
-        <button id="detail-close" class="btn-ghost">Close</button>
+<!-- ─── RESPONSE MODAL ─── -->
+<div class="overlay" id="responseOverlay" onclick="closeOnOverlay(event,'responseOverlay')">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">✅ Submit Account Response</span>
+      <button class="modal-close" onclick="closeModal('responseOverlay')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <label class="field-label" for="resCompany">Company (open requests only)</label>
+        <select class="field-select" id="resCompany" onchange="loadOpenRequestsForCompany()"></select>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="resRequest">Select Request to Answer</label>
+        <select class="field-select" id="resRequest"></select>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="resAnswer">Your Response</label>
+        <textarea class="field-textarea" id="resAnswer" placeholder="Provide the update or answer here…"></textarea>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="resName">Your Name</label>
+        <input class="field-input" type="text" id="resName" placeholder="e.g. Zarwali" />
       </div>
     </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('responseOverlay')">Cancel</button>
+      <button class="btn btn-green" onclick="submitResponse()">Submit ✓</button>
+    </div>
   </div>
+</div>
 
-  <script src="config.js"></script>
-  <script src="app.js"></script>
+<!-- ─── TOAST ─── -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════════════════════
+const COMPANIES = [{"rank":3,"name":"Pepsico","category":"Food & Beverage","region":"NA","scp":"SCP","advisor":"Jon Dano","advisorEmail":"jon.dano@sap.com","ae":"Spencer Phillips","aeEmail":"spencer.phillips@sap.com","landscape":"S/4","deployment":"⛰️","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":""},{"rank":4,"name":"Procter & Gamble","category":"Home and Personal Care","region":"NA","scp":"","advisor":"John Buckley","advisorEmail":"john.buckley01@sap.com","ae":"Kate Schultz","aeEmail":"kate.schultz@sap.com","landscape":"S/4","deployment":"⛰️","previous":"💾","landscapeType":"🏠","projectStatus":"✨","contractSigned":"","notes":""},{"rank":5,"name":"JBS","category":"Protein","region":"LAC","scp":"","advisor":"Rogerio Aversa","advisorEmail":"rogerio.aversa@sap.com","ae":"Thiago Zanguetin","aeEmail":"thiago.zanguetin@sap.com","landscape":"S/4","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":""},{"rank":14,"name":"Philip Morris International","category":"Tobacco","region":"MEE","scp":"","advisor":"Iliana Lazarova","advisorEmail":"iliana.lazarova@sap.com","ae":"Boris Gatzky","aeEmail":"boris.gatzky@sap.com","landscape":"⇧","deployment":"MIX","previous":"","landscapeType":"🏠","projectStatus":"","contractSigned":"Q2 2022","notes":""},{"rank":22,"name":"Henkel AG","category":"Home and Personal Care","region":"MEE","scp":"","advisor":"Iliana Lazarova","advisorEmail":"iliana.lazarova@sap.com","ae":"Andrea Dreger","aeEmail":"andrea.dreger@sap.com","landscape":"⇧","deployment":"⛰️","previous":"💾","landscapeType":"🌎","projectStatus":"⏳","contractSigned":"Q1 2023","notes":""},{"rank":8,"name":"Tyson Foods","category":"Protein","region":"NA","scp":"","advisor":"Gary Decker","advisorEmail":"gary.decker@sap.com","ae":"Shane Reese","aeEmail":"shane.reese@sap.com","landscape":"⇧","deployment":"⛰️","previous":"🛡️","landscapeType":"🏠","projectStatus":"⏳","contractSigned":"Q1 2025","notes":""},{"rank":9,"name":"Mars, Incorporated","category":"Food & Confectionery","region":"NA","scp":"","advisor":"Jon Dano","advisorEmail":"jon.dano@sap.com","ae":"Brian Greenberg","aeEmail":"brian.greenberg@sap.com","landscape":"","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":"Private company. ~$50B revenue (2024). Acquired Kellanova in 2024."},{"rank":36,"name":"B/S/H","category":"Consumer Durables","region":"MEE","scp":"","advisor":"Iliana Lazarova","advisorEmail":"iliana.lazarova@sap.com","ae":"Dr. Jan Smit","aeEmail":"jan.smit@sap.com","landscape":"S/4","deployment":"⛰️","previous":"💾","landscapeType":"🌎","projectStatus":"⏳","contractSigned":"","notes":""},{"rank":77,"name":"Swatch Group","category":"Consumer Durables","region":"MEE","scp":"","advisor":"Iliana Lazarova","advisorEmail":"iliana.lazarova@sap.com","ae":"Christel Newman","aeEmail":"christel.newman@sap.com","landscape":"","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":""},{"rank":1,"name":"Nestlé","category":"Food & Beverage","region":"EMEA","scp":"SCP","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Katharina Roth","aeEmail":"katharina.roth@sap.com","landscape":"⇧","deployment":"L&S","previous":"💾","landscapeType":"🌎","projectStatus":"✨","contractSigned":"Q4 2023","notes":""},{"rank":13,"name":"Haier","category":"Consumer Durables","region":"APAC","scp":"","advisor":"Mehmet Kunter","advisorEmail":"mehmet.kunter@sap.com","ae":"Rex Qiu","aeEmail":"rex.qiu@sap.com","landscape":"ECC","deployment":"N/A","previous":"","landscapeType":"🌎","projectStatus":"Live","contractSigned":"","notes":""},{"rank":6,"name":"Unilever","category":"Home and Personal Care","region":"EMEA","scp":"SCP","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Adrian Smalley","aeEmail":"adrian.smalley@sap.com","landscape":"ECC","deployment":"N/A","previous":"N/A","landscapeType":"🏠","projectStatus":"✨","contractSigned":"","notes":""},{"rank":7,"name":"Anheuser-Busch InBev SA","category":"Alcoholic Beverages","region":"EMEA","scp":"SCP","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Wim Piot","aeEmail":"wim.piot@sap.com","landscape":"⇧","deployment":"🍀","previous":"💾","landscapeType":"🌎","projectStatus":"⏳","contractSigned":"Q4 2023","notes":""},{"rank":10,"name":"L'Oreal","category":"Beauty","region":"EMEA","scp":"SCP","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Yvan Leonardi","aeEmail":"y.leonardi@sap.com","landscape":"⇧","deployment":"🍀","previous":"💾","landscapeType":"🏠","projectStatus":"⏳","contractSigned":"Q4 2025","notes":""},{"rank":15,"name":"Imperial Tobacco Group","category":"Tobacco","region":"EMEA","scp":"","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Charlie Seccombe","aeEmail":"charlie.seccombe@sap.com","landscape":"","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":""},{"rank":16,"name":"Mondelez","category":"Food","region":"EMEA","scp":"SCP","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Lukas Dumhard","aeEmail":"lukas.dumhard@sap.com","landscape":"⇧","deployment":"🍀","previous":"💾","landscapeType":"🏠","projectStatus":"⏳","contractSigned":"Q3 2024","notes":""},{"rank":20,"name":"WH Group","category":"Protein","region":"APAC","scp":"","advisor":"Mehmet Kunter","advisorEmail":"mehmet.kunter@sap.com","ae":"Crystal Lai","aeEmail":"crystal.lai@sap.com","landscape":"","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":""},{"rank":21,"name":"Kraft Heinz","category":"Food","region":"NA","scp":"Ongoing Major M&A","advisor":"John Buckley","advisorEmail":"john.buckley01@sap.com","ae":"Michelle Sluis","aeEmail":"michelle.sluis@sap.com","landscape":"S/4","deployment":"TBD","previous":"💾","landscapeType":"🏠","projectStatus":"✨","contractSigned":"","notes":""},{"rank":17,"name":"Danone SA","category":"Food & Beverage","region":"EMEA","scp":"","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Simon Topalian","aeEmail":"simon.topalian@sap.com","landscape":"ECC","deployment":"","previous":"","landscapeType":"","projectStatus":"✨","contractSigned":"","notes":""},{"rank":23,"name":"Altria Group","category":"Tobacco","region":"NA","scp":"","advisor":"Jon Dano","advisorEmail":"jon.dano@sap.com","ae":"Scott Steinman","aeEmail":"scott.steinman@sap.com","landscape":"ECC","deployment":"⛰️","previous":"N/A","landscapeType":"","projectStatus":"✨","contractSigned":"","notes":""},{"rank":18,"name":"British American Tobacco","category":"Tobacco","region":"EMEA","scp":"","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Charlie Seccombe","aeEmail":"charlie.seccombe@sap.com","landscape":"","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":""},{"rank":25,"name":"Ferrero Group","category":"Food & Confectionery","region":"EMEA","scp":"","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"ROSANNA CUOMO","aeEmail":"rosanna.cuomo@sap.com","landscape":"","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":"Private company. ~€19B revenue (FY2025). 2nd largest confectionery company globally."},{"rank":27,"name":"Uni-President Enterprises","category":"Food & Beverage","region":"APAC","scp":"","advisor":"Mehmet Kunter","advisorEmail":"mehmet.kunter@sap.com","ae":"Jim Huang","aeEmail":"jim.huang@sap.com","landscape":"S/4","deployment":"🍀","previous":"💾","landscapeType":"🌎","projectStatus":"✨","contractSigned":"","notes":""},{"rank":28,"name":"Grupo Bimbo","category":"Food","region":"LAC","scp":"NOT SAP Customer","advisor":"Rogerio Aversa","advisorEmail":"rogerio.aversa@sap.com","ae":"Rodrigo Tavera","aeEmail":"rodrigo.tavera@sap.com","landscape":"","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":""},{"rank":29,"name":"Japan Tobacco","category":"Tobacco","region":"APAC","scp":"","advisor":"Mehmet Kunter","advisorEmail":"mehmet.kunter@sap.com","ae":"Magdalena Ruhhammer","aeEmail":"magdalena.ruhhammer@sap.com","landscape":"⇧","deployment":"⛰️","previous":"💾","landscapeType":"🌎","projectStatus":"✨","contractSigned":"","notes":""},{"rank":26,"name":"Associated British Foods","category":"Food & Beverage","region":"EMEA","scp":"","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Henrietta Horsley-Gubbins","aeEmail":"henrietta.horsley-gubbins@sap.com","landscape":"ECC","deployment":"⛰️","previous":"💾","landscapeType":"🏠","projectStatus":"✨","contractSigned":"","notes":""},{"rank":31,"name":"Colgate-Palmolive","category":"Home and Personal Care","region":"NA","scp":"","advisor":"Jon Dano","advisorEmail":"jon.dano@sap.com","ae":"Bob McArthur III","aeEmail":"bob.mcarthur.iii@sap.com","landscape":"⇧","deployment":"⛰️","previous":"🛡️","landscapeType":"🏠","projectStatus":"⏳","contractSigned":"Q4 2024","notes":""},{"rank":30,"name":"Diageo","category":"Alcoholic Beverages","region":"EMEA","scp":"","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Taylor Fabbi","aeEmail":"t.fabbi@sap.com","landscape":"⇧","deployment":"","previous":"💾","landscapeType":"🌎","projectStatus":"⏳","contractSigned":"Q2 2023","notes":""},{"rank":34,"name":"Asahi Group","category":"Alcoholic Beverages","region":"APAC","scp":"","advisor":"Mehmet Kunter","advisorEmail":"mehmet.kunter@sap.com","ae":"Kosuke Watanabe","aeEmail":"kosuke.watanabe@sap.com","landscape":"S/4","deployment":"⛰️","previous":"💾","landscapeType":"🏠","projectStatus":"⏳","contractSigned":"","notes":""},{"rank":35,"name":"General Mills","category":"Food","region":"NA","scp":"","advisor":"John Buckley","advisorEmail":"john.buckley01@sap.com","ae":"Holly McPherson","aeEmail":"holly.mcpherson@sap.com","landscape":"S/4","deployment":"⛰️","previous":"💾","landscapeType":"🏠","projectStatus":"✨","contractSigned":"","notes":""},{"rank":39,"name":"Arla Foods","category":"Food - Dairy","region":"EMEA","scp":"","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Josephine Enghave","aeEmail":"josephine.arke.enghave@sap.com","landscape":"S/4","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":""},{"rank":38,"name":"Whirlpool","category":"Consumer Durables","region":"NA","scp":"","advisor":"John Buckley","advisorEmail":"john.buckley01@sap.com","ae":"Mike Fornelli","aeEmail":"mike.fornelli@sap.com","landscape":"⇧","deployment":"💧","previous":"N/A","landscapeType":"🏠","projectStatus":"⏳","contractSigned":"Q4 2025","notes":"First Instance activates in March '26. Go live won't be until 2027. Full rollout over 3.5 years"},{"rank":46,"name":"Essity","category":"Home and Personal Care","region":"EMEA","scp":"","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Bjoern Svennesson","aeEmail":"bjorn.svennesson@sap.com","landscape":"⇧","deployment":"🍀","previous":"💾","landscapeType":"🌎","projectStatus":"⏳","contractSigned":"Q4 2025","notes":""},{"rank":40,"name":"Yili","category":"Food - Dairy","region":"APAC","scp":"","advisor":"Mehmet Kunter","advisorEmail":"mehmet.kunter@sap.com","ae":"Henry Peng","aeEmail":"henry.peng@sap.com","landscape":"S/4","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":""},{"rank":41,"name":"Estee Lauder Companies","category":"Beauty","region":"NA","scp":"","advisor":"Jon Dano","advisorEmail":"jon.dano@sap.com","ae":"Faisal Parack","aeEmail":"faisal.parack@sap.com","landscape":"ECC","deployment":"","previous":"","landscapeType":"","projectStatus":"⏳","contractSigned":"","notes":""},{"rank":42,"name":"Kenvue","category":"Consumer Health","region":"NA","scp":"","advisor":"John Buckley","advisorEmail":"john.buckley01@sap.com","ae":"Jeff Hornibrook","aeEmail":"jeff.hornibrook@sap.com","landscape":"S/4","deployment":"⛰️","previous":"💾","landscapeType":"🌎","projectStatus":"✨","contractSigned":"","notes":""},{"rank":43,"name":"Kirin Holdings","category":"Alcoholic Beverages","region":"APAC","scp":"","advisor":"Mehmet Kunter","advisorEmail":"mehmet.kunter@sap.com","ae":"Hiromitsu Nakajima","aeEmail":"hiromitsu.nakajima@sap.com","landscape":"","deployment":"","previous":"","landscapeType":"","projectStatus":"✨","contractSigned":"","notes":""},{"rank":44,"name":"Keurig Dr. Pepper","category":"Beverage","region":"NA","scp":"Ongoing Major M&A","advisor":"Jon Dano","advisorEmail":"jon.dano@sap.com","ae":"Andrew Bailey","aeEmail":"andrew.bailey@sap.com","landscape":"S/4","deployment":"⛰️","previous":"💾","landscapeType":"🏠","projectStatus":"✨","contractSigned":"","notes":""},{"rank":45,"name":"Stanley Black & Decker","category":"Consumer Durables","region":"NA","scp":"","advisor":"Jon Dano","advisorEmail":"jon.dano@sap.com","ae":"George Stemetzki","aeEmail":"george.stemetzki@sap.com","landscape":"ECC","deployment":"N/A","previous":"💾","landscapeType":"🏠","projectStatus":"","contractSigned":"","notes":""},{"rank":47,"name":"Royal Friesland Campina","category":"Food - Dairy","region":"EMEA","scp":"","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Henri Kranendonk","aeEmail":"henri.kranendonk@sap.com","landscape":"⇧","deployment":"⛰️","previous":"💾","landscapeType":"🏠","projectStatus":"⏳","contractSigned":"Q4 2024","notes":""},{"rank":49,"name":"Haleon","category":"Consumer Health","region":"EMEA","scp":"SCP","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Siavash Moshiri","aeEmail":"s.moshiri@sap.com","landscape":"⇧","deployment":"🍀","previous":"💾","landscapeType":"🌎","projectStatus":"⏳","contractSigned":"Q4 2025","notes":""},{"rank":48,"name":"Saputo","category":"Food - Dairy","region":"NA","scp":"","advisor":"Gary Decker","advisorEmail":"gary.decker@sap.com","ae":"Jared Pelletier","aeEmail":"jared.pelletier@sap.com","landscape":"⇧","deployment":"💧","previous":"💾","landscapeType":"🌎","projectStatus":"⏳","contractSigned":"Q4 2025","notes":"Currently run ECC for US, Argentina, Australia. Maestro for Canada"},{"rank":50,"name":"Electrolux","category":"Consumer Durables","region":"EMEA","scp":"","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Magnus Carlsson","aeEmail":"magnus.carlsson@sap.com","landscape":"ECC","deployment":"🍀","previous":"💾","landscapeType":"🌎","projectStatus":"✨","contractSigned":"","notes":""},{"rank":51,"name":"Reckitt","category":"Home and Personal Care","region":"EMEA","scp":"SCP","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Patrik Bertilsson","aeEmail":"patrik.bertilsson@sap.com","landscape":"⇧","deployment":"⛰️","previous":"","landscapeType":"","projectStatus":"✨","contractSigned":"Q4 2023","notes":"MJN on RISE"},{"rank":52,"name":"Pernod Ricard","category":"Alcoholic Beverages","region":"EMEA","scp":"","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Alexandra Rodriguez","aeEmail":"alexandra.rodriguez@sap.com","landscape":"⇧","deployment":"🍀","previous":"t","landscapeType":"🌎","projectStatus":"⏳","contractSigned":"","notes":""},{"rank":54,"name":"The Magnum Ice Cream Company","category":"Food & Beverage","region":"EMEA","scp":"","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Leon Fakkel","aeEmail":"leon.fakkel@sap.com","landscape":"","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":"Spun off from Unilever, IPO Dec 2025. ~€7.9B revenue. Brands: Magnum, Ben & Jerry's, Cornetto, Wall's."},{"rank":53,"name":"Fonterra Co-Op","category":"Food - Dairy","region":"APAC","scp":"","advisor":"Mehmet Kunter","advisorEmail":"mehmet.kunter@sap.com","ae":"Verdon Kelilher","aeEmail":"verdon.kelliher@sap.com","landscape":"⇧","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"Q1 2021","notes":""},{"rank":58,"name":"Carlsberg Breweries","category":"Alcoholic Beverages","region":"EMEA","scp":"","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Nicholas Rouse","aeEmail":"nicholas.rouse@sap.com","landscape":"⇧","deployment":"⛰️","previous":"💾","landscapeType":"🌎","projectStatus":"⏳","contractSigned":"Q4 2024","notes":""},{"rank":55,"name":"China Mengniu Dairy Co","category":"Food - Dairy","region":"APAC","scp":"","advisor":"Mehmet Kunter","advisorEmail":"mehmet.kunter@sap.com","ae":"Qiutao Ren","aeEmail":"qiutao.ren@sap.com","landscape":"ECC","deployment":"🍀","previous":"💾","landscapeType":"🏠","projectStatus":"","contractSigned":"","notes":""},{"rank":56,"name":"Conagra Brands","category":"Food","region":"NA","scp":"","advisor":"John Buckley","advisorEmail":"john.buckley01@sap.com","ae":"Mark Bucheit","aeEmail":"mark.buchheit@sap.com","landscape":"⇧","deployment":"L&S","previous":"💾","landscapeType":"🏠","projectStatus":"✨","contractSigned":"Q4 2024","notes":""},{"rank":57,"name":"Hormel","category":"Protein","region":"NA","scp":"NOT SAP Customer","advisor":"John Buckley","advisorEmail":"john.buckley01@sap.com","ae":"Emily Tifft","aeEmail":"emily.tifft@sap.com","landscape":"","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":""},{"rank":60,"name":"Beiersdorf","category":"Beauty","region":"EMEA","scp":"","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"David Fischer","aeEmail":"david.fischer@sap.com","landscape":"S/4","deployment":"⛰️","previous":"💾","landscapeType":"🌎","projectStatus":"✨","contractSigned":"","notes":""},{"rank":59,"name":"Molson Coors","category":"Alcoholic Beverages","region":"NA","scp":"","advisor":"John Buckley","advisorEmail":"john.buckley01@sap.com","ae":"Holly Bauers","aeEmail":"holly.bauers@sap.com","landscape":"⇧","deployment":"⛰️","previous":"💾","landscapeType":"🌎","projectStatus":"⏳","contractSigned":"Q4 2023","notes":""},{"rank":66,"name":"Arcelik A.S.","category":"Consumer Durables","region":"EMEA","scp":"","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Musa Zobozan","aeEmail":"musa.zorbozan@sap.com","landscape":"⇧","deployment":"⛰️","previous":"💾","landscapeType":"🌎","projectStatus":"✨","contractSigned":"Q2 2025","notes":""},{"rank":61,"name":"VF Corporation","category":"Consumer Durables","region":"NA","scp":"","advisor":"John Buckley","advisorEmail":"john.buckley01@sap.com","ae":"Perry Stensland","aeEmail":"perry.stensland@sap.com","landscape":"","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":"Apparel & footwear. ~$11.6B revenue. Brands: The North Face, Vans, Timberland, Dickies."},{"rank":62,"name":"BRF","category":"Protein","region":"LAC","scp":"","advisor":"Rogerio Aversa","advisorEmail":"rogerio.aversa@sap.com","ae":"Caio Granzotto","aeEmail":"caio.granzotto@sap.com","landscape":"⇧","deployment":"⛰️","previous":"💾","landscapeType":"🌎","projectStatus":"⏳","contractSigned":"Q4 2023","notes":""},{"rank":63,"name":"Hershey","category":"Food","region":"NA","scp":"","advisor":"Jon Dano","advisorEmail":"jon.dano@sap.com","ae":"Scott Steinman","aeEmail":"scott.steinman@sap.com","landscape":"⇧","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"Q4 2025","notes":""},{"rank":64,"name":"Kao","category":"Beauty","region":"APAC","scp":"","advisor":"Mehmet Kunter","advisorEmail":"mehmet.kunter@sap.com","ae":"Ryosuke Hashimoto","aeEmail":"ryosuke.hashimoto@sap.com","landscape":"S/4","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":""},{"rank":72,"name":"Groupe Seb","category":"Consumer Durables","region":"EMEA","scp":"","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Constance Le Bihan","aeEmail":"constance.le.bihan@sap.com","landscape":"S/4","deployment":"⛰️","previous":"💾","landscapeType":"🏠","projectStatus":"✨","contractSigned":"","notes":""},{"rank":67,"name":"Thai Bev","category":"Alcoholic Beverages","region":"APAC","scp":"","advisor":"Mehmet Kunter","advisorEmail":"mehmet.kunter@sap.com","ae":"Chanpakong Visondilok","aeEmail":"chanpakong.visondilok@sap.com","landscape":"S/4","deployment":"","previous":"💾","landscapeType":"🏠","projectStatus":"✨","contractSigned":"","notes":""},{"rank":68,"name":"Natura Cosmeticos S/A","category":"Beauty","region":"LAC","scp":"","advisor":"Rogerio Aversa","advisorEmail":"rogerio.aversa@sap.com","ae":"Dennys Gastaldello","aeEmail":"dennys.gastaldello@sap.com","landscape":"","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":"Brazilian beauty company. ~$5.4B revenue (FY2023). Brands: Natura, Avon, The Body Shop."},{"rank":69,"name":"First Pacific","category":"Food & Beverage","region":"APAC","scp":"","advisor":"Mehmet Kunter","advisorEmail":"mehmet.kunter@sap.com","ae":"Andrea Lopez","aeEmail":"andrea.lopez@sap.com","landscape":"","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":""},{"rank":70,"name":"Constellation Brands","category":"Alcoholic Beverages","region":"NA","scp":"","advisor":"Jon Dano","advisorEmail":"jon.dano@sap.com","ae":"Andrew Bailey","aeEmail":"andrew.bailey@sap.com","landscape":"⇧","deployment":"⛰️","previous":"🛡️","landscapeType":"🌎","projectStatus":"","contractSigned":"Q3 2024","notes":""},{"rank":71,"name":"Campbell Soup Company","category":"Food","region":"NA","scp":"","advisor":"Jon Dano","advisorEmail":"jon.dano@sap.com","ae":"Tom Moran","aeEmail":"tom.moran@sap.com","landscape":"ECC","deployment":"N/A","previous":"💾","landscapeType":"🌎","projectStatus":"✨","contractSigned":"","notes":""},{"rank":78,"name":"Savencia","category":"Food - Dairy","region":"EMEA","scp":"","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Guillaume Bueninck","aeEmail":"guillaume.bueninck@sap.com","landscape":"S/4","deployment":"","previous":"💾","landscapeType":"","projectStatus":"","contractSigned":"","notes":""},{"rank":74,"name":"NH Foods","category":"Protein","region":"APAC","scp":"","advisor":"Mehmet Kunter","advisorEmail":"mehmet.kunter@sap.com","ae":"Mikio Hayashi","aeEmail":"mikio.hayashi@sap.com","landscape":"ECC","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":""},{"rank":76,"name":"ITC Ltd.","category":"Food & Beverage","region":"APAC","scp":"","advisor":"Mehmet Kunter","advisorEmail":"mehmet.kunter@sap.com","ae":"Kuldip Jani","aeEmail":"k.jani@sap.com","landscape":"","deployment":"","previous":"","landscapeType":"","projectStatus":"⏳","contractSigned":"","notes":""},{"rank":84,"name":"Danish Crown","category":"Protein","region":"EMEA","scp":"","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Peter Schusler","aeEmail":"peter.schusler@sap.com","landscape":"⇧","deployment":"⛰️","previous":"💾","landscapeType":"🌎","projectStatus":"⏳","contractSigned":"","notes":""},{"rank":94,"name":"COTY International","category":"Beautty","region":"EMEA","scp":"","advisor":"Rafael Ruiz","advisorEmail":"rafael.ruiz01@sap.com","ae":"Ruud Willemsen","aeEmail":"ruud.willemsen@sap.com","landscape":"S/4","deployment":"⛰️","previous":"💾","landscapeType":"🌎","projectStatus":"✨","contractSigned":"","notes":""},{"rank":79,"name":"J.M. Smucker","category":"Food","region":"NA","scp":"NOT SAP Customer","advisor":"John Buckley","advisorEmail":"john.buckley01@sap.com","ae":"Paul Marron","aeEmail":"paul.marron@sap.com","landscape":"","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":""},{"rank":80,"name":"Post Holdings","category":"Food","region":"NA","scp":"","advisor":"John Buckley","advisorEmail":"john.buckley01@sap.com","ae":"Jeffrey Topel","aeEmail":"jeffrey.topel@sap.com","landscape":"ECC","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":"Laggard Targeting meeting with CFO in Q1 '26"},{"rank":11,"name":"Coca-Cola","category":"Beverage","region":"NA","scp":"SCP","advisor":"Colby Sheridan","advisorEmail":"colby.sheridan@sap.com","ae":"Brandon Rhymer","aeEmail":"brandon.rhymer@sap.com","landscape":"⇧","deployment":"🍀","previous":"💾","landscapeType":"🌎","projectStatus":"✨","contractSigned":"Q4 2025","notes":""},{"rank":32,"name":"Kimberly-Clark","category":"Home and Personal Care","region":"NA","scp":"","advisor":"Colby Sheridan","advisorEmail":"colby.sheridan@sap.com","ae":"Christina Ferguson","aeEmail":"christina.ferguson@sap.com","landscape":"⇧","deployment":"","previous":"","landscapeType":"","projectStatus":"⏳","contractSigned":"Q1 2025","notes":"Closed on RISE for all countries except NA. NA is still 1-2 years away"},{"rank":85,"name":"Clorox Services Co","category":"Home and Personal Care","region":"NA","scp":"","advisor":"Gary Decker","advisorEmail":"gary.decker@sap.com","ae":"Rayan Zein","aeEmail":"rayan.zein@sap.com","landscape":"⇧","deployment":"🍀","previous":"💾","landscapeType":"🌎","projectStatus":"✨","contractSigned":"Q1 2023","notes":""},{"rank":87,"name":"San Miguel Food & Beverage","category":"Food & Beverage","region":"APAC","scp":"","advisor":"Mehmet Kunter","advisorEmail":"mehmet.kunter@sap.com","ae":"Christopher Fildes","aeEmail":"christopher.fildes@sap.com","landscape":"S/4","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":""},{"rank":88,"name":"McCormick","category":"Food","region":"NA","scp":"","advisor":"Jon Dano","advisorEmail":"jon.dano@sap.com","ae":"Cameron Buglione","aeEmail":"cameron.buglione@sap.com","landscape":"S/4","deployment":"🍀","previous":"💾","landscapeType":"🏠","projectStatus":"⏳","contractSigned":"","notes":""},{"rank":91,"name":"Unicharm","category":"Home and Personal Care","region":"APAC","scp":"","advisor":"Mehmet Kunter","advisorEmail":"mehmet.kunter@sap.com","ae":"Takehiro Morimoto","aeEmail":"takehiro.morimoto@sap.com","landscape":"S/4","deployment":"🍀","previous":"💾","landscapeType":"🏠","projectStatus":"✨","contractSigned":"","notes":""},{"rank":93,"name":"Shiseido","category":"Beauty","region":"APAC","scp":"","advisor":"Mehmet Kunter","advisorEmail":"mehmet.kunter@sap.com","ae":"Lynn Mikoshi","aeEmail":"rin.mikoshi@sap.com","landscape":"⇧","deployment":"L&S","previous":"💾","landscapeType":"🌎","projectStatus":"⏳","contractSigned":"Q2 2024","notes":""},{"rank":82,"name":"Newell Brands","category":"Consumer Durables","region":"NA","scp":"","advisor":"Colby Sheridan","advisorEmail":"colby.sheridan@sap.com","ae":"Kevin Moore","aeEmail":"kevin.moore@sap.com","landscape":"ECC","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":""},{"rank":95,"name":"Church & Dwight","category":"Home and Personal Care","region":"NA","scp":"","advisor":"Jon Dano","advisorEmail":"jon.dano@sap.com","ae":"Danielle Prentiss","aeEmail":"danielle.prentiss@sap.com","landscape":"⇧","deployment":"💧","previous":"💾","landscapeType":"🏠","projectStatus":"⏳","contractSigned":"Q3 2024","notes":""},{"rank":98,"name":"Mattel","category":"Consumer Durables","region":"NA","scp":"NOT SAP Customer","advisor":"John Buckley","advisorEmail":"john.buckley01@sap.com","ae":"AR Shaikh","aeEmail":"ar.shaikh@sap.com","landscape":"","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":""},{"rank":102,"name":"Maple Leaf Foods","category":"Protein","region":"NA","scp":"","advisor":"John Buckley","advisorEmail":"john.buckley01@sap.com","ae":"Zed Halawi","aeEmail":"z.halawi@sap.com","landscape":"⇧","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":"Outside Top 100. ~CAD $4.9B revenue (FY2024). Canadian meat & protein company."},{"rank":103,"name":"Chobani","category":"Food - Dairy","region":"NA","scp":"","advisor":"John Buckley","advisorEmail":"john.buckley01@sap.com","ae":"Tom Moran","aeEmail":"tom.moran@sap.com","landscape":"⇧","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":"Outside Top 100. ~$3B revenue (est. FY2024). Private. Dominant US Greek yogurt brand."},{"rank":104,"name":"FGF Brands","category":"Food","region":"NA","scp":"","advisor":"John Buckley","advisorEmail":"john.buckley01@sap.com","ae":"Rick Sandhu","aeEmail":"rick.sandhu@sap.com","landscape":"⇧","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":"Outside Top 100. Sub-$1B revenue (private). Canadian industrial bakery. Brands: ACE Bakery, Stonefire."},{"rank":105,"name":"Riverside Natural Foods","category":"Food","region":"NA","scp":"","advisor":"John Buckley","advisorEmail":"john.buckley01@sap.com","ae":"Isabelle Hilder","aeEmail":"isabelle.hilder@sap.com","landscape":"⇧","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":"Outside Top 100. Sub-$500M revenue (private). Makes MadeGood organic snacks."},{"rank":106,"name":"Qirrat Public School (Test)","category":"Food","region":"APAC","scp":"","advisor":"Zarwali Khan","advisorEmail":"Zar.wali.khan@sap.com","ae":"Shah Taj","aeEmail":"shah.taj@sap.com","landscape":"⇧","deployment":"","previous":"","landscapeType":"","projectStatus":"","contractSigned":"","notes":"JUST TO TEST!","conversation":[{"from":"hq","by":"Shazia Almas","date":"2026-05-20","message":"This is a test email."},{"from":"ae","date":"2026-05-20","message":"YES THIS WILL BE UPDATED, Thanks!"}]}];
+
+// ═══════════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════════
+const API = 'http://localhost:5050/api';
+let requests = [];
+let sortKey = 'rank';
+let sortAsc = true;
+let filterRegion = 'All';
+let searchQuery = '';
+let lastSavedName = '';
+
+async function loadRequests() {
+  try {
+    const res = await fetch(`${API}/requests`);
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    requests = data.map(r => ({
+      id: r.id,
+      company: r.companyName,
+      question: r.question,
+      askedBy: r.requestedBy,
+      status: r.status,
+      createdAt: r.requestedAt,
+      response: r.response || null,
+      respondedBy: r.respondedBy || null,
+      respondedAt: r.respondedAt || null,
+    }));
+  } catch {
+    showToast('Cannot reach local server. Is server.py running?', 'warning');
+    requests = [];
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════════════
+function getRequestsForCompany(name) {
+  return requests.filter(r => r.company === name);
+}
+
+function getRequestStatus(name) {
+  const reqs = getRequestsForCompany(name);
+  if (!reqs.length) return 'none';
+  const hasOpen = reqs.some(r => r.status === 'open');
+  return hasOpen ? 'open' : 'answered';
+}
+
+function catClass(cat) {
+  const map = {
+    'Food & Beverage': 'cat-fb',
+    'Food': 'cat-food',
+    'Food - Dairy': 'cat-dairy',
+    'Home and Personal Care': 'cat-hpc',
+    'Beverage': 'cat-bev',
+    'Alcoholic Beverages': 'cat-alc',
+    'Protein': 'cat-prot',
+    'Beauty': 'cat-beauty',
+    'Tobacco': 'cat-tob',
+    'Consumer Durables': 'cat-dur',
+    'Consumer Health': 'cat-ch',
+  };
+  return map[cat] || 'cat-fb';
+}
+
+function renderProjectStatus(ps) {
+  if (!ps) return '<span style="color:var(--border)">—</span>';
+  if (ps === 'Live') return '<span class="ps-live">Live</span>';
+  if (ps === '✨') return '<span class="ps-star" title="Active / Engaged">✨</span>';
+  if (ps === '⏳') return '<span class="ps-clock" title="In Progress">⏳</span>';
+  return `<span>${ps}</span>`;
+}
+
+function renderConvCell(c) {
+  const msgs = c.conversation || [];
+  if (!msgs.length) return '<span class="conv-none">—</span>';
+  const last = msgs[msgs.length - 1];
+  const fromAe = last.from === 'ae';
+  const snippetClass = fromAe ? 'from-ae' : 'from-hq';
+  const sender = fromAe ? (c.ae || 'AE') : last.by;
+  const snippet = escHtml((last.message || '').substring(0, 55)) + (last.message && last.message.length > 55 ? '…' : '');
+  return `
+    <div class="conv-cell">
+      <div class="conv-meta">
+        <span class="conv-count has-msgs">${msgs.length} msg${msgs.length > 1 ? 's' : ''}</span>
+        <span class="conv-date">${formatDate(last.date)}</span>
+      </div>
+      <div class="conv-snippet ${snippetClass}">${sender}: ${snippet}</div>
+    </div>`;
+}
+
+function getAeEmail(c) {
+  if (!c) return null;
+  if (c.aeEmail) return c.aeEmail;
+  if (c.ae && c.ae.includes('@')) return c.ae;
+  return null;
+}
+
+function getRegions() {
+  const all = ['All'];
+  const seen = new Set();
+  COMPANIES.forEach(c => { if (c.region && !seen.has(c.region)) { seen.add(c.region); all.push(c.region); } });
+  return all;
+}
+
+function getFilteredCompanies() {
+  let list = [...COMPANIES];
+  if (filterRegion !== 'All') list = list.filter(c => c.region === filterRegion);
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    list = list.filter(c => c.name.toLowerCase().includes(q) || (c.ae && c.ae.toLowerCase().includes(q)));
+  }
+  list.sort((a, b) => {
+    let va = a[sortKey] || '';
+    let vb = b[sortKey] || '';
+    if (sortKey === 'rank') { va = Number(va); vb = Number(vb); }
+    if (va < vb) return sortAsc ? -1 : 1;
+    if (va > vb) return sortAsc ? 1 : -1;
+    return 0;
+  });
+  return list;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════════════════════
+function renderStats() {
+  const total = COMPANIES.length;
+  const withContract = COMPANIES.filter(c => c.contractSigned).length;
+  const withSCP = COMPANIES.filter(c => c.scp === 'SCP').length;
+  const openReqs = requests.filter(r => r.status === 'open').length;
+  const answeredReqs = requests.filter(r => r.status === 'answered').length;
+
+  document.getElementById('statsStrip').innerHTML = `
+    <div class="stat-card">
+      <span class="stat-label">Total Accounts</span>
+      <span class="stat-value">${total}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Contract Signed</span>
+      <span class="stat-value gold">${withContract}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">SCP Accounts</span>
+      <span class="stat-value" style="color:var(--sap-blue-mid)">${withSCP}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Open Requests</span>
+      <span class="stat-value orange">${openReqs}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Answered</span>
+      <span class="stat-value green">${answeredReqs}</span>
+    </div>
+  `;
+}
+
+function renderFilters() {
+  const regions = getRegions();
+  const bar = document.getElementById('filterBar');
+  bar.innerHTML = `<span class="filter-label">Region:</span>` +
+    regions.map(r => `<button class="filter-chip${filterRegion===r?' active':''}" onclick="setFilter('${r}')">${r}</button>`).join('');
+}
+
+function renderTable() {
+  const companies = getFilteredCompanies();
+  const tbody = document.getElementById('tableBody');
+  const noResults = document.getElementById('noResults');
+  document.getElementById('rowCount').textContent = `${companies.length} of ${COMPANIES.length} accounts`;
+
+  if (!companies.length) {
+    tbody.innerHTML = '';
+    noResults.style.display = 'block';
+    return;
+  }
+  noResults.style.display = 'none';
+
+  tbody.innerHTML = companies.map(c => {
+    const reqStatus = getRequestStatus(c.name);
+    const highlightClass = reqStatus === 'open' ? 'highlighted' : '';
+    const landscape = c.landscape || '<span style="color:var(--border)">—</span>';
+    return `
+    <tr class="${highlightClass}" onclick="openDetailModal('${c.name.replace(/'/g, "\\'")}')">
+      <td class="td-rank">${c.rank}</td>
+      <td class="td-company">
+        ${c.name}
+        ${c.scp === 'SCP' ? '<span style="font-size:10px;background:#e3f0ff;color:#1a5faa;padding:1px 5px;border-radius:6px;margin-left:5px;font-weight:700;">SCP</span>' : ''}
+        ${c.scp && c.scp !== 'SCP' ? `<span style="font-size:10px;background:#fff3cd;color:#8a5500;padding:1px 5px;border-radius:6px;margin-left:5px;font-weight:600;">${c.scp}</span>` : ''}
+      </td>
+      <td><span class="cat-badge ${catClass(c.category)}">${c.category}</span></td>
+      <td><span class="region-badge">${c.region || '—'}</span></td>
+      <td style="max-width:200px;white-space:normal;font-size:13px;color:var(--text-muted)">${c.ae || '—'}</td>
+      <td><span class="landscape-badge">${landscape}</span></td>
+      <td>${renderProjectStatus(c.projectStatus)}</td>
+      <td>${renderConvCell(c)}</td>
+    </tr>`;
+  }).join('');
+
+  // Highlight sorted column
+  document.querySelectorAll('thead th').forEach((th, i) => {
+    th.classList.remove('sorted','asc');
+  });
+  const keyToIndex = { rank:0, name:1, category:2, region:3, landscape:5, projectStatus:6 };
+  const idx = keyToIndex[sortKey];
+  if (idx !== undefined) {
+    const th = document.querySelectorAll('thead th')[idx];
+    if (th) {
+      th.classList.add('sorted');
+      if (sortAsc) th.classList.add('asc');
+    }
+  }
+}
+
+function render() {
+  renderStats();
+  renderFilters();
+  renderTable();
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  SORT / FILTER / SEARCH
+// ═══════════════════════════════════════════════════════════════
+function sortBy(key) {
+  if (sortKey === key) sortAsc = !sortAsc;
+  else { sortKey = key; sortAsc = true; }
+  renderTable();
+}
+
+function setFilter(region) {
+  filterRegion = region;
+  renderFilters();
+  renderTable();
+}
+
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQuery = e.target.value.trim();
+  renderTable();
+});
+
+// ═══════════════════════════════════════════════════════════════
+//  DETAIL MODAL
+// ═══════════════════════════════════════════════════════════════
+function openDetailModal(name) {
+  const c = COMPANIES.find(co => co.name === name);
+  if (!c) return;
+
+  document.getElementById('detailTitle').textContent = c.name;
+
+  const cells = [
+    ['Rank', `#${c.rank}`],
+    ['Category', `<span class="cat-badge ${catClass(c.category)}">${c.category}</span>`],
+    ['Region', `<span class="region-badge">${c.region || '—'}</span>`],
+    ['SCP Status', c.scp || '—'],
+    ['Advisor', c.advisor || '—'],
+    ['Account Executive', c.ae || '—'],
+    ['Landscape', c.landscape || '—'],
+    ['Deployment', c.deployment || '—'],
+    ['Previous', c.previous || '—'],
+    ['Landscape Type', c.landscapeType || '—'],
+    ['Project Status', c.projectStatus || '—'],
+    ['Contract Signed', c.contractSigned || '—'],
+  ].map(([label, value]) => `
+    <div class="detail-cell">
+      <div class="detail-cell-label">${label}</div>
+      <div class="detail-cell-value">${value}</div>
+    </div>
+  `).join('');
+
+  const notesHtml = c.notes
+    ? `<div style="margin-bottom:22px;">
+        <div class="section-heading">📝 Notes</div>
+        <div style="font-size:13.5px;line-height:1.6;color:var(--text);background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;">${c.notes}</div>
+       </div>`
+    : '';
+
+  const msgs = c.conversation || [];
+  const convItems = msgs.length
+    ? msgs.map(m => `
+      <div class="conv-msg ${m.from === 'ae' ? 'ae' : 'hq'}">
+        <div class="conv-msg-meta">${m.from === 'ae' ? (c.ae || 'AE') : m.by} · ${formatDate(m.date)}</div>
+        ${escHtml(m.message)}
+      </div>`).join('')
+    : '<div class="conv-empty">No conversation yet for this account.</div>';
+
+  document.getElementById('detailBody').innerHTML = `
+    <div class="detail-grid">${cells}</div>
+    ${notesHtml}
+    <div class="section-heading">💬 Conversation History</div>
+    <div class="conv-thread">${convItems}</div>
+    <div style="display:flex;gap:10px;margin-top:4px;">
+      <button class="btn btn-blue" onclick="openRequestModalFor('${escAttr(c.name)}')">➕ Request Update</button>
+    </div>
+  `;
+
+  openModal('detailOverlay');
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  REQUEST MODAL
+// ═══════════════════════════════════════════════════════════════
+function populateCompanyDropdown(selectId, onlyOpen = false) {
+  const sel = document.getElementById(selectId);
+  sel.innerHTML = '';
+  let list = [...COMPANIES].sort((a,b) => a.name.localeCompare(b.name));
+  if (onlyOpen) {
+    list = list.filter(c => getRequestStatus(c.name) === 'open');
+  }
+  if (!list.length) {
+    sel.innerHTML = '<option value="">— No companies available —</option>';
+    return;
+  }
+  list.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c.name;
+    opt.textContent = `#${c.rank} ${c.name}`;
+    sel.appendChild(opt);
+  });
+}
+
+function openRequestModal() {
+  populateCompanyDropdown('reqCompany');
+  document.getElementById('reqQuestion').value = '';
+  document.getElementById('reqName').value = lastSavedName;
+  openModal('requestOverlay');
+}
+
+function openRequestModalFor(name) {
+  closeModal('detailOverlay');
+  populateCompanyDropdown('reqCompany');
+  document.getElementById('reqCompany').value = name;
+  document.getElementById('reqQuestion').value = '';
+  document.getElementById('reqName').value = lastSavedName;
+  openModal('requestOverlay');
+}
+
+function submitRequest() {
+  const company = document.getElementById('reqCompany').value;
+  const question = document.getElementById('reqQuestion').value.trim();
+  const name = document.getElementById('reqName').value.trim();
+
+  if (!company) return showToast('Please select a company.', 'warning');
+  if (!question) return showToast('Please enter a question or request.', 'warning');
+  if (!name) return showToast('Please enter your name.', 'warning');
+
+  const c = COMPANIES.find(co => co.name === company);
+  const aeEmail = c && c.aeEmail ? c.aeEmail : '';
+  const advisorEmail = c && c.advisorEmail ? c.advisorEmail : '';
+
+  lastSavedName = name;
+  const subject = encodeURIComponent(`[SAP CPG Portal] Update requested for ${company}`);
+  const body = encodeURIComponent(
+    `Hi,\n\nA question has been submitted for ${company} via the SAP CPG Sales Portal.\n\n` +
+    `Question / Request:\n${question}\n\n` +
+    `Requested by: ${name}\n` +
+    `Date: ${new Date().toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'})}\n\n` +
+    `Please reply to this email with your response.\n\nBest regards,\n${name}`
+  );
+
+  const ccList = ['Zar.wali.khan@sap.com', advisorEmail].filter(Boolean).join(',');
+  const mailto = `mailto:${aeEmail}?cc=${encodeURIComponent(ccList)}&subject=${subject}&body=${body}`;
+
+  window.open(mailto, '_blank');
+
+  closeModal('requestOverlay');
+  showToast(`Outlook opened for ${company}.`, 'success');
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  RESPONSE MODAL
+// ═══════════════════════════════════════════════════════════════
+function openResponseModal() {
+  populateCompanyDropdown('resCompany', true);
+  const resCompany = document.getElementById('resCompany');
+  if (!resCompany.options.length || !resCompany.options[0].value) {
+    showToast('No open requests to respond to.', 'warning');
+    return;
+  }
+  document.getElementById('resAnswer').value = '';
+  document.getElementById('resName').value = lastSavedName;
+  loadOpenRequestsForCompany();
+  openModal('responseOverlay');
+}
+
+function loadOpenRequestsForCompany() {
+  const company = document.getElementById('resCompany').value;
+  const sel = document.getElementById('resRequest');
+  sel.innerHTML = '';
+  const openReqs = requests.filter(r => r.company === company && r.status === 'open');
+  openReqs.forEach(r => {
+    const opt = document.createElement('option');
+    opt.value = r.id;
+    opt.textContent = `${formatDate(r.createdAt)} — ${r.question.substring(0,60)}${r.question.length>60?'…':''}`;
+    sel.appendChild(opt);
+  });
+  if (!openReqs.length) {
+    sel.innerHTML = '<option value="">— No open requests —</option>';
+  }
+}
+
+async function submitResponse() {
+  const company = document.getElementById('resCompany').value;
+  const reqId = document.getElementById('resRequest').value;
+  const answer = document.getElementById('resAnswer').value.trim();
+  const name = document.getElementById('resName').value.trim();
+
+  if (!reqId) return showToast('No request selected.', 'warning');
+  if (!answer) return showToast('Please enter a response.', 'warning');
+  if (!name) return showToast('Please enter your name.', 'warning');
+
+  const req = requests.find(r => r.id === reqId);
+  if (!req) return showToast('Request not found.', 'warning');
+
+  try {
+    await fetch(`${API}/requests/${reqId}/respond`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ response: answer, respondedBy: name })
+    });
+    const req = requests.find(r => r.id === reqId);
+    if (req) { req.response = answer; req.respondedBy = name; req.respondedAt = new Date().toISOString(); req.status = 'answered'; }
+  } catch {
+    showToast('Failed to save response. Is server.py running?', 'warning');
+    return;
+  }
+
+  lastSavedName = name;
+  closeModal('responseOverlay');
+  render();
+  showToast(`Response submitted for ${company}.`, 'success');
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  MODAL UTILS
+// ═══════════════════════════════════════════════════════════════
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeOnOverlay(e, id) {
+  if (e.target.id === id) closeModal(id);
+}
+
+// Close on Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    ['detailOverlay','requestOverlay','responseOverlay'].forEach(closeModal);
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════════════════════════
+let toastTimeout = null;
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' ' + type : '');
+  if (toastTimeout) clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => { t.className = 'toast'; }, 3200);
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════════════════════════
+function formatDate(iso) {
+  if (!iso) return '—';
+  try {
+    return new Date(iso).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+  } catch { return iso; }
+}
+
+function escHtml(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function escAttr(s) {
+  return (s||'').replace(/'/g,'&apos;').replace(/"/g,'&quot;');
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════════
+async function init() {
+  await loadRequests();
+  render();
+}
+init();
+</script>
 </body>
 </html>

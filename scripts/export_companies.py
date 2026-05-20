@@ -3,8 +3,7 @@ import openpyxl
 
 EXCEL_PATH = r"C:\Users\I769971\CLAUDE\Top 100\Book3.xlsx"
 OUTPUT_PATH = "data/companies.json"
-SHEET_NAME = "CP ERP Top 100"
-HEADER_ROW = 3
+SHEET_NAME = "CP ERP Top 100 - Updated"
 DATA_START_ROW = 4
 
 wb = openpyxl.load_workbook(EXCEL_PATH, data_only=True)
@@ -13,7 +12,6 @@ ws = wb[SHEET_NAME]
 companies = []
 for row in ws.iter_rows(min_row=DATA_START_ROW, values_only=True):
     rank = row[0]
-    # Stop at empty rows or legend rows (rank must be a number)
     if not isinstance(rank, (int, float)):
         continue
 
@@ -24,14 +22,16 @@ for row in ws.iter_rows(min_row=DATA_START_ROW, values_only=True):
         "region": str(row[3]).strip() if row[3] else "",
         "scp": str(row[4]).strip() if row[4] else "",
         "advisor": str(row[5]).strip() if row[5] else "",
-        "ae": str(row[6]).strip() if row[6] else "",
-        "landscape": str(row[7]).strip() if row[7] else "",
-        "deployment": str(row[8]).strip() if row[8] else "",
-        "previous": str(row[9]).strip() if row[9] else "",
-        "landscapeType": str(row[10]).strip() if row[10] else "",
-        "projectStatus": str(row[11]).strip() if row[11] else "",
-        "contractSigned": str(row[13]).strip() if row[13] else "",
-        "notes": str(row[14]).strip() if row[14] else "",
+        "advisorEmail": str(row[6]).strip() if row[6] else "",
+        "ae": str(row[7]).strip() if row[7] else "",
+        "aeEmail": str(row[8]).strip() if row[8] else "",
+        "landscape": str(row[9]).strip() if row[9] else "",
+        "deployment": str(row[10]).strip() if row[10] else "",
+        "previous": str(row[11]).strip() if row[11] else "",
+        "landscapeType": str(row[12]).strip() if row[12] else "",
+        "projectStatus": str(row[13]).strip() if row[13] else "",
+        "contractSigned": str(row[15]).strip() if row[15] else "",
+        "notes": str(row[16]).strip() if row[16] else "",
     }
     companies.append(company)
 
