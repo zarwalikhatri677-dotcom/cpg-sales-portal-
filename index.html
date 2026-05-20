@@ -1440,6 +1440,23 @@ function escAttr(s) {
 // ═══════════════════════════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════════════════════════
+const CAT_MAP = {
+  'Food':               'Food',
+  'Food & Beverage':    'Food',
+  'Food & Confectionery':'Food',
+  'Food - Dairy':       'Food',
+  'Protein':            'Food',
+  'Beverage':           'Beverage',
+  'Alcoholic Beverages':'Beverage',
+  'Home and Personal Care':'Home and Personal Care',
+  'Beauty':             'Home and Personal Care',
+  'Beautty':            'Home and Personal Care',
+  'Consumer Health':    'Home and Personal Care',
+  'Tobacco':            'Tobacco',
+  'Consumer Durables':  'Durables',
+};
+COMPANIES.forEach(c => { c.category = CAT_MAP[c.category] || c.category; });
+
 async function init() {
   await loadRequests();
   render();
