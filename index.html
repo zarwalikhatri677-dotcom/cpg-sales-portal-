@@ -1070,10 +1070,10 @@ function getFilteredCompanies() {
 // ═══════════════════════════════════════════════════════════════
 function renderStats() {
   const total = COMPANIES.length;
-  const withContract = COMPANIES.filter(c => c.contractSigned).length;
-  const withSCP = COMPANIES.filter(c => c.scp === 'SCP').length;
-  const openReqs = requests.filter(r => r.status === 'open').length;
-  const answeredReqs = requests.filter(r => r.status === 'answered').length;
+  const riseCount  = COMPANIES.filter(c => c.landscape === '⇧').length;
+  const s4Count    = COMPANIES.filter(c => c.landscape === 'S/4').length;
+  const eccCount   = COMPANIES.filter(c => c.landscape === 'ECC').length;
+  const activeConv = COMPANIES.filter(c => c.conversation && c.conversation.length > 0).length;
 
   document.getElementById('statsStrip').innerHTML = `
     <div class="stat-card">
@@ -1081,20 +1081,20 @@ function renderStats() {
       <span class="stat-value">${total}</span>
     </div>
     <div class="stat-card">
-      <span class="stat-label">Contract Signed</span>
-      <span class="stat-value gold">${withContract}</span>
+      <span class="stat-label">Active Conversations</span>
+      <span class="stat-value orange">${activeConv}</span>
     </div>
     <div class="stat-card">
-      <span class="stat-label">SCP Accounts</span>
-      <span class="stat-value" style="color:var(--sap-blue-mid)">${withSCP}</span>
+      <span class="stat-label">RISE Deals</span>
+      <span class="stat-value green">${riseCount}</span>
     </div>
     <div class="stat-card">
-      <span class="stat-label">Open Requests</span>
-      <span class="stat-value orange">${openReqs}</span>
+      <span class="stat-label">S/4 On-Prem</span>
+      <span class="stat-value" style="color:var(--sap-blue-mid)">${s4Count}</span>
     </div>
     <div class="stat-card">
-      <span class="stat-label">Answered</span>
-      <span class="stat-value green">${answeredReqs}</span>
+      <span class="stat-label">ECC</span>
+      <span class="stat-value gold">${eccCount}</span>
     </div>
   `;
 }
