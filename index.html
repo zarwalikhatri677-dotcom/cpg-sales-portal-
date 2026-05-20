@@ -972,7 +972,6 @@ async function loadRequests() {
       respondedAt: r.respondedAt || null,
     }));
   } catch {
-    showToast('Cannot reach local server. Is server.py running?', 'warning');
     requests = [];
   }
 }
