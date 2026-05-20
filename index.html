@@ -881,7 +881,8 @@
     <div class="modal-body">
       <div class="field-group">
         <label class="field-label" for="reqCompany">Company</label>
-        <select class="field-select" id="reqCompany"></select>
+        <input class="field-input" type="text" id="reqCompany" placeholder="Search company…" autocomplete="off" list="reqCompanyList" />
+        <datalist id="reqCompanyList"></datalist>
       </div>
       <div class="field-group">
         <label class="field-label" for="reqQuestion">Your Question / Request</label>
@@ -892,7 +893,7 @@
         <input class="field-input" type="text" id="reqName" placeholder="e.g. Zarwali" />
       </div>
       <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">
-        Clicking "Send + Email →" will open Outlook with a pre-filled message to the Account Executive. You and the Industry Advisor will be CC'd automatically.
+        "Send + Email →" opens Outlook to the AE. Zarwali is CC'd to track the conversation; the Industry Advisor is CC'd for visibility.
       </p>
     </div>
     <div class="modal-footer">
@@ -1242,22 +1243,32 @@ function openDetailModal(name) {
 //  REQUEST MODAL
 // ═══════════════════════════════════════════════════════════════
 function populateCompanyDropdown(selectId, onlyOpen = false) {
-  const sel = document.getElementById(selectId);
-  sel.innerHTML = '';
-  let list = [...COMPANIES].sort((a,b) => a.name.localeCompare(b.name));
-  if (onlyOpen) {
-    list = list.filter(c => getRequestStatus(c.name) === 'open');
+  const el = document.getElementById(selectId);
+  // Handle both <select> (resCompany) and <input>+<datalist> (reqCompany)
+  if (el.tagName === 'SELECT') {
+    el.innerHTML = '';
+    let list = [...COMPANIES].sort((a,b) => a.name.localeCompare(b.name));
+    if (onlyOpen) list = list.filter(c => getRequestStatus(c.name) === 'open');
+    if (!list.length) { el.innerHTML = '<option value="">— No companies available —</option>'; return; }
+    list.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.name;
+      opt.textContent = `#${c.rank} ${c.name}`;
+      el.appendChild(opt);
+    });
+  } else {
+    // text input with datalist
+    const dl = document.getElementById(selectId + 'List');
+    if (!dl) return;
+    dl.innerHTML = '';
+    let list = [...COMPANIES].sort((a,b) => a.name.localeCompare(b.name));
+    list.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.name;
+      opt.label = `#${c.rank} ${c.name}`;
+      dl.appendChild(opt);
+    });
   }
-  if (!list.length) {
-    sel.innerHTML = '<option value="">— No companies available —</option>';
-    return;
-  }
-  list.forEach(c => {
-    const opt = document.createElement('option');
-    opt.value = c.name;
-    opt.textContent = `#${c.rank} ${c.name}`;
-    sel.appendChild(opt);
-  });
 }
 
 function openRequestModal() {
