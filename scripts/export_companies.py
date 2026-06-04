@@ -43,6 +43,8 @@ for row in ws.iter_rows(min_row=DATA_START_ROW, values_only=True):
         "projectStatus": str(row[13]).strip() if row[13] else "",
         "contractSigned": str(row[15]).strip() if row[15] else "",
         "notes": str(row[16]).strip() if row[16] else "",
+        "aiEngagement": str(row[17]).strip() if len(row) > 17 and row[17] else "",
+        "aiSolutions": str(row[18]).strip() if len(row) > 18 and row[18] else "",
     }
     companies.append(company)
 

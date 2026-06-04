@@ -32,6 +32,8 @@ for row in ws.iter_rows(min_row=DATA_START_ROW, values_only=True):
         display_rank = None
 
     def cell(i):
+        if i >= len(row):
+            return ""
         v = row[i]
         return str(v).strip() if v is not None else ""
 
@@ -52,6 +54,8 @@ for row in ws.iter_rows(min_row=DATA_START_ROW, values_only=True):
         "projectStatus": cell(13),
         "contractSigned":cell(15),
         "notes":         cell(16),
+        "aiEngagement":  cell(17),
+        "aiSolutions":   cell(18),
     }
     companies.append(company)
 
