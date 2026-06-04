@@ -1,5 +1,23 @@
 [
   {
+    "rank": 12,
+    "name": "Heineken International",
+    "category": "Alcoholic Beverages",
+    "region": "MEE",
+    "scp": "",
+    "advisor": "Iliana Lazarova",
+    "advisorEmail": "iliana.lazarova@sap.com",
+    "ae": "Martijn Blok",
+    "aeEmail": "martijn.blok@sap.com",
+    "landscape": "⇧",
+    "deployment": "🍀",
+    "previous": "🛡️",
+    "landscapeType": "🌎",
+    "projectStatus": "⏳",
+    "contractSigned": "Q4 2025",
+    "notes": "Roll out will take place from '26-'29"
+  },
+  {
     "rank": 3,
     "name": "Pepsico",
     "category": "Food & Beverage",
@@ -1458,7 +1476,7 @@
     "notes": ""
   },
   {
-    "rank": 102,
+    "rank": null,
     "name": "Maple Leaf Foods",
     "category": "Protein",
     "region": "NA",
@@ -1476,7 +1494,7 @@
     "notes": "Outside Top 100. ~CAD $4.9B revenue (FY2024). Canadian meat & protein company."
   },
   {
-    "rank": 103,
+    "rank": null,
     "name": "Chobani",
     "category": "Food - Dairy",
     "region": "NA",
@@ -1494,7 +1512,7 @@
     "notes": "Outside Top 100. ~$3B revenue (est. FY2024). Private. Dominant US Greek yogurt brand."
   },
   {
-    "rank": 104,
+    "rank": null,
     "name": "FGF Brands",
     "category": "Food",
     "region": "NA",
@@ -1512,7 +1530,7 @@
     "notes": "Outside Top 100. Sub-$1B revenue (private). Canadian industrial bakery. Brands: ACE Bakery, Stonefire."
   },
   {
-    "rank": 105,
+    "rank": null,
     "name": "Riverside Natural Foods",
     "category": "Food",
     "region": "NA",
@@ -1528,23 +1546,5 @@
     "projectStatus": "",
     "contractSigned": "",
     "notes": "Outside Top 100. Sub-$500M revenue (private). Makes MadeGood organic snacks."
-  },
-  {
-    "rank": 106,
-    "name": "Qirrat Public School (Test)",
-    "category": "Food",
-    "region": "APAC",
-    "scp": "",
-    "advisor": "Zarwali Khan",
-    "advisorEmail": "Zar.wali.khan@sap.com",
-    "ae": "Shah Taj",
-    "aeEmail": "shah.taj@sap.com",
-    "landscape": "⇧",
-    "deployment": "",
-    "previous": "",
-    "landscapeType": "",
-    "projectStatus": "",
-    "contractSigned": "",
-    "notes": "JUST TO TEST!"
   }
 ]

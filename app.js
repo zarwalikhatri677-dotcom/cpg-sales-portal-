@@ -70,7 +70,7 @@ function renderTable(data) {
     const rs = requestStatusForCompany(c.name);
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${c.rank}</td>
+      <td>${c.rank !== null && c.rank !== undefined ? c.rank : '—'}</td>
       <td class="company-name">${c.name}</td>
       <td>${c.category}</td>
       <td>${c.region}</td>
@@ -114,7 +114,7 @@ function populateCompanyDropdown(selectId, list) {
   list.forEach(c => {
     const opt = document.createElement('option');
     opt.value = c.name;
-    opt.textContent = `${c.rank}. ${c.name}`;
+    opt.textContent = c.rank ? `${c.rank}. ${c.name}` : c.name;
     sel.appendChild(opt);
   });
 }
@@ -232,7 +232,7 @@ const DEPLOYMENT_LEGEND = { '🍀': 'Greenfield', '💧': 'Bluefield', '⛰️':
 const STATUS_LEGEND = { '✨': 'Live', '⏳': 'In Progress', '💼': 'Shelfware' };
 
 function openDetailModal(company) {
-  document.getElementById('detail-name').textContent = `${company.rank}. ${company.name}`;
+  document.getElementById('detail-name').textContent = company.rank ? `${company.rank}. ${company.name}` : company.name;
 
   const companyRequests = requests.filter(r => r.companyName === company.name);
 

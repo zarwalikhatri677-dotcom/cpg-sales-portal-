@@ -1,10 +1,10 @@
 import json
 import openpyxl
 
-EXCEL_PATH = r"C:\Users\I769971\CLAUDE\Top 100\Book3.xlsx"
+EXCEL_PATH = r"C:\Users\I769971\CLAUDE\Joe Lobeck\Top 100 Companies\Working File - CPG Sales Portal.xlsx"
 OUTPUT_PATH = "data/companies.json"
 SHEET_NAME = "CP ERP Top 100 - Updated"
-DATA_START_ROW = 4
+DATA_START_ROW = 3  # Was 4 — changed to 3 to include Heineken (row 3 in Excel)
 
 wb = openpyxl.load_workbook(EXCEL_PATH, data_only=True)
 ws = wb[SHEET_NAME]
@@ -12,12 +12,23 @@ ws = wb[SHEET_NAME]
 companies = []
 for row in ws.iter_rows(min_row=DATA_START_ROW, values_only=True):
     rank = row[0]
+    name = str(row[1]).strip() if row[1] else ""
+
     if not isinstance(rank, (int, float)):
         continue
+    if not name:
+        continue
+
+    # Skip test accounts
+    if "(test)" in name.lower():
+        continue
+
+    rank_int = int(rank)
 
     company = {
-        "rank": int(rank),
-        "name": str(row[1]).strip() if row[1] else "",
+        # Companies outside the CGT top 100 get no rank number displayed
+        "rank": rank_int if rank_int <= 100 else None,
+        "name": name,
         "category": str(row[2]).strip() if row[2] else "",
         "region": str(row[3]).strip() if row[3] else "",
         "scp": str(row[4]).strip() if row[4] else "",
