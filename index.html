@@ -1082,6 +1082,7 @@ function renderDeployment(d) {
 function renderProjectStatus(ps, landscape) {
   if (!ps || ps === '-' || ps === '—') return '<span style="color:var(--border)">—</span>';
   if (ps === 'Live' || ps === '✨') {
+    if (landscape === 'ECC') return '<span style="color:var(--border)">—</span>';
     return '<span class="ps-badge ps-live">Live</span>';
   }
   if (ps === '⏳' || ps === 'In Progress')
