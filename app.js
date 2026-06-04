@@ -20,7 +20,8 @@ let requests  = [];
 // ── GITHUB API ───────────────────────────────────────────────────────────
 async function ghGet(path) {
   const res = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`, {
-    headers: { Authorization: `token ${GITHUB_TOKEN}`, Accept: 'application/vnd.github.v3+json' }
+    headers: { Authorization: `token ${GITHUB_TOKEN}`, Accept: 'application/vnd.github.v3+json' },
+    cache: 'no-store'
   });
   if (!res.ok) throw new Error(`GitHub GET ${path} failed: ${res.status}`);
   return res.json();
