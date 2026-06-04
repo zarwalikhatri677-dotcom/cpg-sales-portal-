@@ -209,36 +209,68 @@
   .filter-bar {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    margin-bottom: 16px;
+    gap: 10px;
+    margin-bottom: 18px;
   }
 
-  .filter-label {
-    font-size: 12px;
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .filter-row-label {
+    font-size: 11px;
+    font-weight: 700;
     color: var(--text-muted);
-    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.7px;
+    min-width: 72px;
+    flex-shrink: 0;
   }
 
-  .filter-chip {
-    padding: 5px 14px;
-    border-radius: 18px;
+  .filter-tray {
+    display: flex;
+    align-items: center;
+    background: var(--surface2);
     border: 1px solid var(--border);
-    background: var(--surface);
+    border-radius: 22px;
+    padding: 3px;
+    gap: 1px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .filter-tray::-webkit-scrollbar { display: none; }
+
+  .filter-opt {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 13px;
+    border-radius: 18px;
+    border: none;
+    background: transparent;
     color: var(--text-muted);
     font-size: 12.5px;
-    cursor: pointer;
-    transition: all 0.15s;
     font-weight: 500;
+    cursor: pointer;
+    transition: color 0.15s;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  .filter-opt:hover { color: var(--text); }
+  .filter-opt.active {
+    background: var(--surface);
+    color: var(--sap-blue);
+    font-weight: 700;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.10), 0 0 0 1px var(--border);
   }
 
-  .filter-chip:hover { border-color: var(--sap-blue-light); color: var(--sap-blue-light); }
-  .filter-chip.active {
-    background: var(--sap-blue);
-    border-color: var(--sap-blue);
-    color: #fff;
-    font-weight: 600;
+  .filter-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
   }
 
   /* ─── TABLE ─── */
@@ -684,7 +716,8 @@
   @media (max-width: 600px) {
     .stats-strip { gap: 8px; }
     .stat-card { min-width: 100px; padding: 10px 14px; }
-    .filter-bar { gap: 6px; }
+    .filter-bar { gap: 8px; }
+    .filter-row-label { min-width: 60px; font-size: 10px; }
     #searchInput { width: 130px; }
   }
 
@@ -1160,17 +1193,33 @@ function renderStats() {
 
 function renderFilters() {
   const regions    = getRegions();
-  const landscapes = ['All', 'RISE', 'S/4', 'ECC', 'Unknown'];
+  const landscapes = [
+    { key: 'All',     dot: null },
+    { key: 'RISE',    dot: '#1b7a40' },
+    { key: 'S/4',     dot: '#1a5faa' },
+    { key: 'ECC',     dot: '#8a5500' },
+    { key: 'Unknown', dot: '#b0bcd4' },
+  ];
   const bar = document.getElementById('filterBar');
-  bar.innerHTML =
-    `<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;width:100%;">
-       <span class="filter-label">Region:</span>` +
-       regions.map(r => `<button class="filter-chip${filterRegion===r?' active':''}" onclick="setRegionFilter('${r}')">${r}</button>`).join('') +
-    `</div>
-     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;width:100%;margin-top:6px;">
-       <span class="filter-label">Landscape:</span>` +
-       landscapes.map(l => `<button class="filter-chip${filterLandscape===l?' active':''}" onclick="setLandscapeFilter('${l}')">${l}</button>`).join('') +
-    `</div>`;
+
+  const regionOpts = regions.map(r =>
+    `<button class="filter-opt${filterRegion===r?' active':''}" onclick="setRegionFilter('${r}')">${r}</button>`
+  ).join('');
+
+  const landOpts = landscapes.map(l => {
+    const dot = l.dot ? `<span class="filter-dot" style="background:${l.dot}"></span>` : '';
+    return `<button class="filter-opt${filterLandscape===l.key?' active':''}" onclick="setLandscapeFilter('${l.key}')">${dot}${l.key}</button>`;
+  }).join('');
+
+  bar.innerHTML = `
+    <div class="filter-row">
+      <span class="filter-row-label">Region</span>
+      <div class="filter-tray">${regionOpts}</div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-row-label">Landscape</span>
+      <div class="filter-tray">${landOpts}</div>
+    </div>`;
 }
 
 function renderTable() {
