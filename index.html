@@ -208,10 +208,9 @@
   /* ─── FILTER BAR ─── */
   .filter-bar {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    flex-direction: column;
+    gap: 4px;
     margin-bottom: 16px;
-    flex-wrap: wrap;
   }
 
   .filter-label {
@@ -951,7 +950,8 @@ const API = 'http://localhost:5050/api';
 let requests = [];
 let sortKey = 'rank';
 let sortAsc = true;
-let filterRegion = 'All';
+let filterRegion    = 'All';
+let filterLandscape = 'All';
 let searchQuery = '';
 let lastSavedName = '';
 
@@ -1050,6 +1050,12 @@ function getRegions() {
 function getFilteredCompanies() {
   let list = [...COMPANIES];
   if (filterRegion !== 'All') list = list.filter(c => c.region === filterRegion);
+  if (filterLandscape !== 'All') {
+    if      (filterLandscape === 'RISE')    list = list.filter(c => c.landscape === '⇧');
+    else if (filterLandscape === 'S/4')     list = list.filter(c => c.landscape === 'S/4');
+    else if (filterLandscape === 'ECC')     list = list.filter(c => c.landscape === 'ECC');
+    else if (filterLandscape === 'Unknown') list = list.filter(c => !c.landscape);
+  }
   if (searchQuery) {
     const q = searchQuery.toLowerCase();
     list = list.filter(c => c.name.toLowerCase().includes(q) || (c.ae && c.ae.toLowerCase().includes(q)));
@@ -1073,7 +1079,7 @@ function renderStats() {
   const riseCount  = COMPANIES.filter(c => c.landscape === '⇧').length;
   const s4Count    = COMPANIES.filter(c => c.landscape === 'S/4').length;
   const eccCount   = COMPANIES.filter(c => c.landscape === 'ECC').length;
-  const activeConv = COMPANIES.filter(c => c.conversation && c.conversation.length > 0).length;
+  const unknownCount = COMPANIES.filter(c => !c.landscape).length;
 
   document.getElementById('statsStrip').innerHTML = `
     <div class="stat-card">
@@ -1081,11 +1087,7 @@ function renderStats() {
       <span class="stat-value">${total}</span>
     </div>
     <div class="stat-card">
-      <span class="stat-label">Active Conversations</span>
-      <span class="stat-value orange">${activeConv}</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-label">RISE Deals</span>
+      <span class="stat-label">RISE</span>
       <span class="stat-value green">${riseCount}</span>
     </div>
     <div class="stat-card">
@@ -1096,14 +1098,26 @@ function renderStats() {
       <span class="stat-label">ECC</span>
       <span class="stat-value gold">${eccCount}</span>
     </div>
+    <div class="stat-card">
+      <span class="stat-label">Coverage Unknown</span>
+      <span class="stat-value" style="color:var(--text-muted)">${unknownCount}</span>
+    </div>
   `;
 }
 
 function renderFilters() {
-  const regions = getRegions();
+  const regions    = getRegions();
+  const landscapes = ['All', 'RISE', 'S/4', 'ECC', 'Unknown'];
   const bar = document.getElementById('filterBar');
-  bar.innerHTML = `<span class="filter-label">Region:</span>` +
-    regions.map(r => `<button class="filter-chip${filterRegion===r?' active':''}" onclick="setFilter('${r}')">${r}</button>`).join('');
+  bar.innerHTML =
+    `<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;width:100%;">
+       <span class="filter-label">Region:</span>` +
+       regions.map(r => `<button class="filter-chip${filterRegion===r?' active':''}" onclick="setRegionFilter('${r}')">${r}</button>`).join('') +
+    `</div>
+     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;width:100%;margin-top:6px;">
+       <span class="filter-label">Landscape:</span>` +
+       landscapes.map(l => `<button class="filter-chip${filterLandscape===l?' active':''}" onclick="setLandscapeFilter('${l}')">${l}</button>`).join('') +
+    `</div>`;
 }
 
 function renderTable() {
@@ -1170,8 +1184,14 @@ function sortBy(key) {
   renderTable();
 }
 
-function setFilter(region) {
+function setRegionFilter(region) {
   filterRegion = region;
+  renderFilters();
+  renderTable();
+}
+
+function setLandscapeFilter(landscape) {
+  filterLandscape = landscape;
   renderFilters();
   renderTable();
 }
