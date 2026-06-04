@@ -1,11 +1,13 @@
 import json
 import os
+import shutil
 import openpyxl
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-EXCEL_PATH = r"C:\Users\I769971\CLAUDE\Joe Lobeck\Top 100 Companies\Working File - CPG Sales Portal.xlsx"
-HTML_PATH  = os.path.join(SCRIPT_DIR, '..', 'index.html')
-SHEET_NAME = "CP ERP Top 100 - Updated"
+EXCEL_PATH  = r"C:\Users\I769971\CLAUDE\Joe Lobeck\Top 100 Companies\Working File - CPG Sales Portal.xlsx"
+HTML_PATH   = os.path.join(SCRIPT_DIR, '..', 'index.html')
+COPY_PATH   = r"C:\Users\I769971\CLAUDE\Joe Lobeck\Top 100 Companies\CPG Sales Portal.html"
+SHEET_NAME  = "CP ERP Top 100 - Updated"
 DATA_START_ROW = 3  # Row 3 = Heineken (rank 12)
 
 wb = openpyxl.load_workbook(EXCEL_PATH, data_only=True)
@@ -72,4 +74,7 @@ if not replaced:
 with open(HTML_PATH, 'w', encoding='utf-8') as f:
     f.writelines(lines)
 
+shutil.copy2(HTML_PATH, COPY_PATH)
+
 print(f"Done — index.html updated with {len(companies)} companies.")
+print(f"Copied -> {COPY_PATH}")
