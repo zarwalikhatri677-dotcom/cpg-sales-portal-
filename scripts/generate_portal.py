@@ -2,6 +2,7 @@ import json
 import os
 import shutil
 import openpyxl
+import pathlib
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 EXCEL_PATH  = r"C:\Users\I769971\CLAUDE\Joe Lobeck\Top 100 Companies\Working File - CPG Sales Portal.xlsx"
@@ -60,25 +61,39 @@ for row in ws.iter_rows(min_row=DATA_START_ROW, values_only=True):
     companies.append(company)
 
 companies_json = json.dumps(companies, ensure_ascii=False, separators=(',', ':'))
-new_line = f'const COMPANIES = {companies_json};\n'
+
+# Load intelligence data
+intel_path = pathlib.Path(SCRIPT_DIR) / '..' / 'data' / 'intelligence.json'
+if intel_path.exists():
+    with open(intel_path, 'r', encoding='utf-8') as f:
+        intelligence = json.load(f)
+else:
+    intelligence = {}
+
+intelligence_json = json.dumps(intelligence, ensure_ascii=False, separators=(',', ':'))
 
 with open(HTML_PATH, 'r', encoding='utf-8') as f:
     lines = f.readlines()
 
-replaced = False
+replaced_companies = False
+replaced_intelligence = False
 for i, line in enumerate(lines):
     if line.strip().startswith('const COMPANIES = '):
-        lines[i] = new_line
-        replaced = True
-        break
+        lines[i] = f'const COMPANIES = {companies_json};\n'
+        replaced_companies = True
+    elif line.strip().startswith('const INTELLIGENCE = '):
+        lines[i] = f'const INTELLIGENCE = {intelligence_json};\n'
+        replaced_intelligence = True
 
-if not replaced:
+if not replaced_companies:
     raise ValueError("Could not find COMPANIES array in index.html — aborting.")
+if not replaced_intelligence:
+    raise ValueError("Could not find INTELLIGENCE object in index.html — aborting.")
 
 with open(HTML_PATH, 'w', encoding='utf-8') as f:
     f.writelines(lines)
 
 shutil.copy2(HTML_PATH, COPY_PATH)
 
-print(f"Done — index.html updated with {len(companies)} companies.")
+print(f"Done — index.html updated with {len(companies)} companies, {len(intelligence)} intelligence records.")
 print(f"Copied -> {COPY_PATH}")
