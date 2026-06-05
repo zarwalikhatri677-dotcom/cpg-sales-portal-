@@ -809,7 +809,7 @@
     padding: 11px 14px;
     font-size: 13.5px;
     line-height: 1.55;
-    max-width: 92%;
+    max-width: 88%;
   }
   .conv-msg.hq {
     background: #e8f0fe;
@@ -825,15 +825,32 @@
     text-align: left;
   }
   .conv-msg-meta {
+    display: flex;
+    align-items: center;
+    gap: 7px;
     font-size: 10.5px;
     color: var(--text-muted);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.4px;
   }
   .conv-msg.ae .conv-msg-meta { color: var(--sap-green); }
   .conv-msg.hq .conv-msg-meta { color: var(--sap-blue-mid); }
+  .conv-avatar {
+    width: 22px; height: 22px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700; flex-shrink: 0; color: #fff;
+    letter-spacing: 0;
+  }
+  .av-hq { background: var(--sap-blue); }
+  .av-ae { background: var(--sap-green); }
+  .conv-role-tag {
+    background: rgba(0,0,0,0.07); border-radius: 4px;
+    padding: 1px 5px; font-size: 9px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.3px;
+  }
+  .conv-msg-body { font-size: 13px; line-height: 1.6; color: var(--text); }
   .conv-empty {
     text-align: center;
     padding: 20px;
@@ -1058,6 +1075,47 @@ const COMPANIES = [{"rank":1,"name":"Nestlé","category":"Food","region":"MEE","
 // ═══════════════════════════════════════════════════════════════
 //  INTELLIGENCE DATA (auto-generated — do not edit manually)
 const INTELLIGENCE = {"Nestlé":{"updated":"2026-06-05","bullets":[{"text":"FY2024 organic sales growth 2.2% (below target); CEO Laurent Freixe took over late 2024 with focus on volume recovery.","source":"Nestlé FY2024 Annual Report","url":"https://www.nestle.com/investors/annual-report"},{"text":"Portfolio reshaping underway: divesting water brands, doubling down on pet care, coffee (Nespresso), and nutrition as core growth pillars.","source":"Nestlé Investor Day 2024","url":"https://www.nestle.com/investors"},{"text":"AI-driven demand forecasting deployed across 60+ markets as part of the 'Nestlé Compass' digital strategy.","source":"Nestlé FY2024 Annual Report","url":"https://www.nestle.com/investors/annual-report"},{"text":"Supply chain nearshoring program targeting 70% local sourcing in key markets by 2026 to reduce logistics costs and carbon footprint.","source":"Nestlé Sustainability Report 2024","url":"https://www.nestle.com/sustainability"},{"text":"Private-label competition in Europe and North America pressuring volumes in ambient food and bottled water — key challenge for the new CEO.","source":"Nestlé FY2024 Annual Report","url":"https://www.nestle.com/investors/annual-report"}]},"Pepsico":{"updated":"2026-06-05","bullets":[{"text":"FY2024 revenue ~$91.5B, flat YoY; volume declines in North America beverages and snacks signaling consumer fatigue after years of price hikes.","source":"PepsiCo FY2024 Annual Report","url":"https://www.pepsico.com/investors"},{"text":"$1.2B cost reduction program launched 2025 — supply chain simplification, SKU rationalization, and headcount reductions.","source":"PepsiCo Q4 2024 Earnings Call","url":"https://www.pepsico.com/investors"},{"text":"AI-powered end-to-end supply chain visibility live across top 20 markets, with real-time demand sensing integrated into production planning.","source":"PepsiCo Investor Day 2024","url":"https://www.pepsico.com/investors"},{"text":"Investing in GLP-1-adjacent innovation (Gatorade reformulations, SodaStream, baked Lay's) to capture demand shift driven by weight-loss drug trends.","source":"PepsiCo Strategy Briefing 2024","url":"https://www.pepsico.com/investors"},{"text":"Frito-Lay North America volumes fell for the 3rd consecutive quarter in late 2024; responding with entry-price multipacks and smaller-format SKUs.","source":"PepsiCo Q4 2024 Earnings Call","url":"https://www.pepsico.com/investors"}]},"Procter & Gamble":{"updated":"2026-06-05","bullets":[{"text":"FY2025 net sales ~$84B, organic growth ~3%; Fabric & Home Care and Beauty divisions leading performance amid pricing normalization.","source":"P&G FY2025 Annual Report","url":"https://pginvestor.com"},{"text":"AI-powered inventory optimization and predictive maintenance deployed at 100+ plants, delivering a 20% reduction in unplanned downtime.","source":"P&G Investor Day 2024","url":"https://pginvestor.com"},{"text":"'Reinventing the Value Chain' initiative leveraging SAP S/4HANA for real-time supply chain visibility across 80+ countries; full rollout targeted by 2026.","source":"P&G Digital Transformation Briefing 2024","url":"https://pginvestor.com"},{"text":"SK-II, Olay, and Gillette Labs facing significant headwinds in China; P&G accelerating localization of product innovation and marketing.","source":"P&G FY2025 Annual Report","url":"https://pginvestor.com"},{"text":"100% recyclable or reusable packaging commitment by 2030; Tide Eco-Box and refill station pilots live in Europe and North America.","source":"P&G Sustainability Report 2024","url":"https://pginvestor.com"}]},"JBS":{"updated":"2026-06-05","bullets":[{"text":"FY2024 net revenue ~$73B; US beef and Pilgrim's Pride (poultry) performing strongly while pork margins remain under commodity cycle pressure.","source":"JBS FY2024 Annual Report","url":"https://ri.jbs.com.br"},{"text":"Completed dual-listing on NYSE in 2024 — a landmark governance milestone improving capital access and international investor profile.","source":"JBS Investor Relations 2024","url":"https://ri.jbs.com.br"},{"text":"Investing $500M+ annually in automation: AI carcass grading, predictive maintenance, and IoT-enabled cold chain management across global facilities.","source":"JBS Innovation Report 2024","url":"https://ri.jbs.com.br"},{"text":"ESG scrutiny over Brazil deforestation supply chain links; 'JBS Green' initiative targets zero-deforestation sourcing by 2025 with traceability tech.","source":"JBS Sustainability Report 2024","url":"https://ri.jbs.com.br"},{"text":"Diversifying into alternative proteins (Planterra Foods) and value-added prepared foods to reduce reliance on volatile commodity protein revenues.","source":"JBS Strategy Presentation 2024","url":"https://ri.jbs.com.br"}]},"Unilever":{"updated":"2026-06-05","bullets":[{"text":"FY2024 turnover ~€60B, underlying sales growth 4.2%; volume recovery strongest in India, Indonesia, and Sub-Saharan Africa.","source":"Unilever FY2024 Annual Report","url":"https://www.unilever.com/investor-relations/"},{"text":"Ice cream division (Magnum, Ben & Jerry's, Wall's) being separated as a standalone company by end 2025 — Unilever's largest divestiture in years.","source":"Unilever Investor Update 2024","url":"https://www.unilever.com/investor-relations/"},{"text":"AI-powered demand planning platform across 190 countries reduced forecast error by 15%, cutting working capital and waste.","source":"Unilever Digital Transformation Briefing 2024","url":"https://www.unilever.com/investor-relations/"},{"text":"Refocusing on 30 'Power Brands' (Dove, Hellmann's, Lipton, Comfort) accounting for 70%+ of revenue; underperforming brands being divested.","source":"Unilever FY2024 Annual Report","url":"https://www.unilever.com/investor-relations/"},{"text":"€800M net productivity savings target by 2026 via SAP S/4HANA rollout and a 30% reduction in the global supplier base.","source":"Unilever Investor Day 2024","url":"https://www.unilever.com/investor-relations/"}]},"Anheuser-Busch InBev SA":{"updated":"2026-06-05","bullets":[{"text":"FY2024 revenue ~$59.4B; volumes -1% globally but EBITDA grew +8% driven by premiumization of Corona, Stella Artois, and Budweiser.","source":"AB InBev FY2024 Annual Report","url":"https://www.ab-inbev.com/investors"},{"text":"BEES digital B2B platform now connecting 3.5M+ retail customers across 25 markets; processed $12B+ in GMV in 2024.","source":"AB InBev Digital Commerce Report 2024","url":"https://www.ab-inbev.com/investors"},{"text":"Middle Africa and South America delivering double-digit revenue growth in 2024, offsetting volume softness in the US and Europe.","source":"AB InBev FY2024 Annual Report","url":"https://www.ab-inbev.com/investors"},{"text":"$500M+ invested in US sports sponsorships and marketing to rebuild Bud Light brand equity following the 2023 controversy.","source":"AB InBev Investor Day 2024","url":"https://www.ab-inbev.com/investors"},{"text":"Targeting 100% renewable electricity across all breweries by 2025; committed to water-neutral operations in all high water-stress areas by 2030.","source":"AB InBev Sustainability Report 2024","url":"https://www.ab-inbev.com/sustainability"}]},"Tyson Foods":{"updated":"2026-06-05","bullets":[{"text":"FY2024 revenue ~$53B; returned to profitability after FY2023 losses; chicken and prepared foods divisions leading the recovery.","source":"Tyson Foods FY2024 Annual Report","url":"https://ir.tysonfoods.com"},{"text":"9 plant closures and ~10% workforce reduction executed in 2024 as part of a $1B+ cost-saving restructuring program.","source":"Tyson Foods Q4 2024 Earnings Call","url":"https://ir.tysonfoods.com"},{"text":"AI-based robotic deboning and portioning systems deployed at 12 major chicken processing plants; targeting 15% reduction in labor costs.","source":"Tyson Foods Innovation Briefing 2024","url":"https://ir.tysonfoods.com"},{"text":"Prepared foods segment (Jimmy Dean, Hillshire Farm, Ball Park) is now the fastest-growing and most profitable division.","source":"Tyson Foods FY2024 Annual Report","url":"https://ir.tysonfoods.com"},{"text":"Active regulatory and litigation exposure: worker safety, environmental compliance, and ongoing price-fixing investigations in beef and chicken.","source":"Tyson Foods FY2024 10-K Filing","url":"https://ir.tysonfoods.com"}]},"L'Oreal":{"updated":"2026-06-05","bullets":[{"text":"FY2024 sales ~€43.5B, like-for-like growth ~5.1%; Dermatological Beauty (CeraVe) and Luxury divisions leading category growth.","source":"L'Oréal FY2024 Annual Report","url":"https://www.loreal-finance.com"},{"text":"'Beauty Tech' strategy: AI tools (ModiFace AR try-on, SkinConsult AI) scanning over 1 billion consumer touchpoints annually.","source":"L'Oréal Investor Day 2024","url":"https://www.loreal-finance.com"},{"text":"North Asia (China) growth decelerated in 2024; L'Oréal actively reallocating investment to South/Southeast Asia and the Middle East.","source":"L'Oréal FY2024 Annual Report","url":"https://www.loreal-finance.com"},{"text":"SAP-based integrated planning deployed across 40+ manufacturing sites; pushing toward full Industry 4.0 factory automation.","source":"L'Oréal Digital Operations Briefing 2024","url":"https://www.loreal-finance.com"},{"text":"Active M&A pipeline following the Aesop acquisition (2023, $2.53B); actively targeting prestige skincare assets in the US and Asia.","source":"L'Oréal Strategy Presentation 2024","url":"https://www.loreal-finance.com"}]},"Coca-Cola":{"updated":"2026-06-05","bullets":[{"text":"FY2024 net revenues ~$47.1B, organic growth +12%; long-term organic growth target raised to 5–6% annually through 2028.","source":"Coca-Cola FY2024 Annual Report","url":"https://investors.coca-colacompany.com"},{"text":"Diversification beyond sparkling beverages: sports (Powerade, BodyArmor), RTD coffee (Costa), and alcoholic RTDs (Topo Chico) now account for 25%+ of total volume.","source":"Coca-Cola Investor Day 2024","url":"https://investors.coca-colacompany.com"},{"text":"AI-driven vending and cooler optimization ('Coke On' platform) deployed in 30+ markets enabling dynamic pricing and automated restocking.","source":"Coca-Cola Digital Strategy Briefing 2024","url":"https://investors.coca-colacompany.com"},{"text":"Consolidated franchise bottler relationships in Africa and Southeast Asia to improve speed-to-market and capital efficiency in high-growth emerging markets.","source":"Coca-Cola FY2024 Annual Report","url":"https://investors.coca-colacompany.com"},{"text":"Targeting 50% recycled packaging material by 2030; EU single-use plastics regulation timelines are accelerating the transition roadmap.","source":"Coca-Cola Sustainability Report 2024","url":"https://investors.coca-colacompany.com"}]},"Heineken International":{"updated":"2026-06-05","bullets":[{"text":"FY2024 revenue ~€36.4B; Heineken and Amstel premium segments grew at double the portfolio average rate.","source":"Heineken FY2024 Annual Report","url":"https://www.theheinekencompany.com/investors"},{"text":"'EverGreen' strategy delivered €400M in cost savings through supply chain simplification and global procurement consolidation.","source":"Heineken Investor Day 2024","url":"https://www.theheinekencompany.com/investors"},{"text":"AI revenue management tools deployed in 50 markets; 500,000+ connected smart cooler IoT program tracking real-time outlet sell-out data.","source":"Heineken Digital Commerce Report 2024","url":"https://www.theheinekencompany.com/investors"},{"text":"Nigeria headwinds persist: local currency devaluation driving double-digit volume declines; Heineken responding with affordability pack formats.","source":"Heineken FY2024 Annual Report","url":"https://www.theheinekencompany.com/investors"},{"text":"Committed to net-zero by 2040 across the full value chain; 62% of own operations already running on renewable electricity.","source":"Heineken Sustainability Report 2024","url":"https://www.theheinekencompany.com/sustainability"}]}};
+// ═══════════════════════════════════════════════════════════════
+//  DEMO CONVERSATION DATA
+const DEMO_CONVERSATIONS = {
+  "Unilever": [
+    {
+      from: "hq",
+      by: "Shady Shalaby",
+      role: "VP Consumer Industries",
+      date: "2026-05-12",
+      message: "Hi team — I'm looking at our tracker and Unilever is still showing ECC with no RISE project flagged. They're one of our highest-priority strategic accounts in EMEA. Can someone walk me through what's blocking the conversation?"
+    },
+    {
+      from: "ae",
+      by: "Account Executive",
+      role: "AE",
+      date: "2026-05-14",
+      message: "Hi Shady — thanks for flagging. The main blocker right now is the Ice Cream division separation (Magnum, Ben & Jerry's, Wall's). Unilever has made a deliberate call to freeze major IT investment decisions until that spinoff closes — they're targeting Q4 2025. Their CIO office was very clear: no transformational programs until the org stabilises."
+    },
+    {
+      from: "hq",
+      by: "Industry Advisor",
+      role: "Industry Advisor",
+      date: "2026-05-15",
+      message: "That context is really helpful. Post-separation they'll have a much cleaner ERP landscape to work with. Have you positioned RISE as the natural next step once the Ice Cream business is carved out? That's actually a compelling entry point — clean slate, new operating model."
+    },
+    {
+      from: "ae",
+      by: "Account Executive",
+      role: "AE",
+      date: "2026-05-20",
+      message: "Exactly the angle I've been taking. I've had two conversations with their SVP of IT and there's genuine interest in RISE — especially given the €800M productivity savings target they've committed to investors. I've proposed a value case workshop for Q1 2026 and we're working on locking in a date. Will keep you both posted."
+    },
+    {
+      from: "hq",
+      by: "Shady Shalaby",
+      role: "VP Consumer Industries",
+      date: "2026-06-03",
+      message: "Great progress. Let's flag Unilever as Q1 2026 priority in the tracker. Keep this thread updated once the workshop date is confirmed — I'd like to join for the opening. This one is very winnable."
+    }
+  ]
+};
 // ═══════════════════════════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════════════════════════
@@ -1420,13 +1478,24 @@ function openDetailModal(name) {
        </div>`
     : '';
 
-  const msgs = c.conversation || [];
+  const msgs = DEMO_CONVERSATIONS[c.name] || c.conversation || [];
   const convItems = msgs.length
-    ? msgs.map(m => `
-      <div class="conv-msg ${m.from === 'ae' ? 'ae' : 'hq'}">
-        <div class="conv-msg-meta">${m.from === 'ae' ? (c.ae || 'AE') : m.by} · ${formatDate(m.date)}</div>
-        ${escHtml(m.message)}
-      </div>`).join('')
+    ? msgs.map(m => {
+        const isAe = m.from === 'ae';
+        const name = isAe ? (c.ae || 'Account Executive') : m.by;
+        const role = m.role || (isAe ? 'AE' : 'HQ');
+        const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+        return `
+        <div class="conv-msg ${isAe ? 'ae' : 'hq'}">
+          <div class="conv-msg-meta">
+            <span class="conv-avatar ${isAe ? 'av-ae' : 'av-hq'}">${initials}</span>
+            <span>${name}</span>
+            <span class="conv-role-tag">${role}</span>
+            <span style="margin-left:auto;opacity:0.6">${formatDate(m.date)}</span>
+          </div>
+          <div class="conv-msg-body">${escHtml(m.message)}</div>
+        </div>`;
+      }).join('')
     : '<div class="conv-empty">No conversation yet for this account.</div>';
 
   const storyUrl = `https://www.experience-agent.cloud.sap/search?q=${encodeURIComponent(c.name)}&sortBy=UPLOAD_DATE_DESCENDING&pageNumber=0&lenient=false&assetTypeTitles=Customer+Reference+Profile&assetTypeTitles=Business+Transformation+Study&assetTypeTitles=Customer+Reference+Slide&assetTypeTitles=Customer+Feature+Story&assetTypeTitles=Customer+Quote&assetTypeTitles=Customer+Reference+Summary&assetTypeTitles=Customer+Testimonial+Video&assetTypeTitles=HTML+Customer+Story&assetTypeTitles=Innovation+Award&assetTypeTitles=Online+Customer+Story&assetTypeTitles=Social+Card`;
