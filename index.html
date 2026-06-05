@@ -781,6 +781,20 @@
     color: var(--sap-blue-mid);
     border-color: #b3d0f5;
   }
+  .conv-open-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #fff4e5; color: #b85c00; border: 1px solid #ffd4a0;
+    border-radius: 10px; padding: 1px 7px 1px 5px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;
+  }
+  .conv-open-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: #e07800; flex-shrink: 0;
+    animation: conv-pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes conv-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.45; transform: scale(0.75); }
+  }
   .conv-date {
     font-size: 10.5px;
     color: var(--text-muted);
@@ -1081,7 +1095,7 @@ const DEMO_CONVERSATIONS = {
   "Unilever": [
     {
       from: "hq",
-      by: "Shady Shalaby",
+      by: "Shady Ghattas",
       role: "VP Consumer Industries",
       date: "2026-05-12",
       message: "Hi team — I'm looking at our tracker and Unilever is still showing ECC with no RISE project flagged. They're one of our highest-priority strategic accounts in EMEA. Can someone walk me through what's blocking the conversation?"
@@ -1095,7 +1109,7 @@ const DEMO_CONVERSATIONS = {
     },
     {
       from: "hq",
-      by: "Industry Advisor",
+      by: "Rafael Ruiz",
       role: "Industry Advisor",
       date: "2026-05-15",
       message: "That context is really helpful. Post-separation they'll have a much cleaner ERP landscape to work with. Have you positioned RISE as the natural next step once the Ice Cream business is carved out? That's actually a compelling entry point — clean slate, new operating model."
@@ -1109,7 +1123,7 @@ const DEMO_CONVERSATIONS = {
     },
     {
       from: "hq",
-      by: "Shady Shalaby",
+      by: "Shady Ghattas",
       role: "VP Consumer Industries",
       date: "2026-06-03",
       message: "Great progress. Let's flag Unilever as Q1 2026 priority in the tracker. Keep this thread updated once the workshop date is confirmed — I'd like to join for the opening. This one is very winnable."
@@ -1214,18 +1228,18 @@ function renderAiBadge(ai) {
 }
 
 function renderConvCell(c) {
-  const msgs = c.conversation || [];
+  const msgs = DEMO_CONVERSATIONS[c.name] || c.conversation || [];
   if (!msgs.length) return '<span class="conv-none">—</span>';
   const last = msgs[msgs.length - 1];
   const fromAe = last.from === 'ae';
   const snippetClass = fromAe ? 'from-ae' : 'from-hq';
   const sender = fromAe ? (c.ae || 'AE') : last.by;
-  const snippet = escHtml((last.message || '').substring(0, 55)) + (last.message && last.message.length > 55 ? '…' : '');
+  const snippet = escHtml((last.message || '').substring(0, 50)) + (last.message && last.message.length > 50 ? '…' : '');
   return `
     <div class="conv-cell">
       <div class="conv-meta">
+        <span class="conv-open-badge"><span class="conv-open-dot"></span>Open</span>
         <span class="conv-count has-msgs">${msgs.length} msg${msgs.length > 1 ? 's' : ''}</span>
-        <span class="conv-date">${formatDate(last.date)}</span>
       </div>
       <div class="conv-snippet ${snippetClass}">${sender}: ${snippet}</div>
     </div>`;
