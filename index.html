@@ -991,7 +991,6 @@
           <th>AE</th>
           <th onclick="sortBy('landscape')">Landscape</th>
           <th onclick="sortBy('projectStatus')">Status</th>
-          <th>AI</th>
           <th>Conversation</th>
         </tr>
       </thead>
@@ -1383,7 +1382,6 @@ function renderTable() {
       <td style="max-width:200px;white-space:normal;font-size:13px;color:var(--text-muted)">${c.ae || '—'}</td>
       <td>${renderLandscape(c.landscape, c.landscapeNote)}</td>
       <td>${renderProjectStatus(c.projectStatus, c.landscape)}</td>
-      <td>${renderAiBadge(c.aiEngagement)}</td>
       <td>${renderConvCell(c)}</td>
     </tr>`;
   }).join('');
